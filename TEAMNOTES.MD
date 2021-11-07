@@ -51,7 +51,7 @@ These are dedicated status check-ins as this is a multi-week project
   - disabled state when giving solutions and checking
   - Drag state of each sortable option
 - What properties need mapped to HAX/the storybook? What can the user interact with?
-  - We will need to map properties such as disabled buttons & options, the option text (or question selected depending on our implementation), correct/incorrect state
+  - We will need to map properties such as disabled buttons & options, the option text (or question selected depending on our implementation), correct/incorrect state, question/option themes if we choose to support themes.
   - The user should be able to use the up and down arrows, click to move, or drag each section to sort.
   - The user should be able to check their answers.
   - The user should be able to view correct answers.
