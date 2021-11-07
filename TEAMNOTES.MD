@@ -14,6 +14,8 @@ These are notes to be maintained PER date that you meet. What you did and what t
 ## Status check ins
 These are dedicated status check-ins as this is a multi-week project
 ### Check-in 1
+- Discussed our assignment and design requirements online on 11/7
+  - Next steps will be to begin to divide elements and decide on the design of the component
 - Sorting Question: https://github.com/elmsln/issues/issues/872
 -  ![IMG_1688](https://user-images.githubusercontent.com/89546413/140660308-9ca3b50d-c107-4a48-8b9c-593fc304012f.jpeg)
 - Initial questions/unknowns
@@ -25,16 +27,31 @@ These are dedicated status check-ins as this is a multi-week project
   - retry button
   - individual components for each answer/section to be sorted
   - buttons to use for toggling the section up or down
+  - Sorting Options Frame
 - What properties do you expect these to have?
-  -   
+  - Retry Button
+    - Disabled
+  - Sortable Option
+    - Disabled
+    - Selected
+    - Correct Index
+    - Current Index
+    - Option Text
+    - Selected/Focused
+  - Sortable Array
+    - Sorted (Boolean)
 - Slots?
-  - 
+  - Each sortable option will need to be slotted into the Sortable Options Frame depending on the question asked.
+  - Text will be slotted into each sortable option
 - What CSS/Styling unknowns are there presently?
-  - 
+  - Not an unknown, but figuring out logic for adding a correct/incorrect border via reflected properties
+  - Handling the "swap" animation when options are switched with one another
 - What states does it have? Can you click/hover to engage with it?
   - correct and incorrect state for checking
   - disabled state when giving solutions and checking
+  - Drag state of each sortable option
 - What properties need mapped to HAX/the storybook? What can the user interact with?
+  - We will need to map properties such as disabled buttons & options, the option text (or question selected depending on our implementation), correct/incorrect state
   - The user should be able to use the up and down arrows, click to move, or drag each section to sort.
   - The user should be able to check their answers.
   - The user should be able to view correct answers.
