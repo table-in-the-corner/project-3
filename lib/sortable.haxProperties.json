@@ -4,7 +4,7 @@
     "canEditSource": true,
     "contentEditable": true,
     "gizmo": {
-      "title": "Rename me",
+      "title": "Sortable",
       "description": "An element to improve the future of education",
       "icon": "credit-card",
       "color": "blue",
