@@ -6,16 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="Description" content="Put your description here.">
   <base href="/">
-
   <style>
     html,
     body {
       margin: 0;
       padding: 50px;
-      font-family: sans-serif;
+      font-family: 'Open Sans', sans-serif;
+      font-display: swap;
     }
     .wrapper {
-      margin: 100px;
+      margin: 50px;
     }
     .menu {
       display: flex;
@@ -34,7 +34,7 @@
 </head>
 
 <body>
-  <ul class="menu">
+  <!-- <ul class="menu">
     <li><a href="#">Rename demo</a></li>
     <li><a href="/hax.html">HAX, card demo</a></li>
   </ul>
@@ -43,9 +43,16 @@
     <word-count>
       <rename-me need="nothing"><div>You feel much shame.</div></rename-me>
     </word-count>
+  </div> -->
+  <div class="wrapper">
+    <sortable-option choice="Option 1"></sortable-option>
+    <sortable-option choice="Option 2"></sortable-option>
+    <sortable-option choice="Option 3"></sortable-option>
+    <sortable-option choice="Option 4"></sortable-option>
+    <sortable-option choice="Option 5"></sortable-option>
   </div>
   <script type="module">
-    import "./rename-me.js";
+    import "./sortable-options.js";
     import "@lrnwebcomponents/word-count/word-count.js";
   </script>
 </body>
