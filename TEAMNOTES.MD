@@ -10,6 +10,15 @@ These are notes to be maintained PER date that you meet. What you did and what t
 
 #### What we'll do next
 
+### Meeting 11/11
+#### What we did:
+- created sortable options boxes to begin working with for sorting
+- began dividing up work to be done
+- discussed how we wanted to accomplish the project i.e. use scaffolding, wrapping, etc.
+#### What we'll do next
+- begin working on sorting
+- once sorting method is determined, we can begin working on how we want to approach the checking and answers features
+
 
 ## Status check ins
 These are dedicated status check-ins as this is a multi-week project
@@ -57,8 +66,16 @@ These are dedicated status check-ins as this is a multi-week project
   - The user should be able to view correct answers.
   - The user should be able to retry the problem having it reset back to its original state.
 ### Check-in 2
-- 
-- 
+- Progress Made:
+  - began working on Sortable and SortableOption classes
+  - created basic sortable option boxes to begin working on functionality 
+- Anticipated Delegation of Work:
+  - Nick: Logic for interactions and Sortable
+  - Bailey: SortableOption and Storyboard
+  - Noelle: Checking and Answers features
+  - Nicole: Tests, Checking and Answers fetures
+- Questions/Problems
+  - None at the moment
 ### Check-in 3
 - 
 - 
