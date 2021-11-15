@@ -71,7 +71,7 @@ These are dedicated status check-ins as this is a multi-week project
 - Progress Made:
   - began working on Sortable and SortableOption elements
   - created basic sortable option boxes to begin working on functionality 
-  - Basic UI Sorting/dragging interaction implementation and testing
+  - Basic UI Sorting/dragging interaction implementation (still testing)
 - Anticipated Delegation of Work:
   - Nick: Logic for interactions and SortableFrame
   - Bailey: SortableOption and Storyboard
