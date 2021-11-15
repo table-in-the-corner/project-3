@@ -1,5 +1,5 @@
-// import { Sortable } from './src/Sortable.js';
+import { SortableFrame } from './src/SortableFrame.js';
 import { SortableOption } from './src/SortableOption.js';
 
-// customElements.define(Sortable.tag, Sortable);
+customElements.define(SortableFrame.tag, SortableFrame);
 customElements.define(SortableOption.tag, SortableOption);

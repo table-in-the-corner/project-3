@@ -46,12 +46,15 @@ export class SortableOption extends LitElement {
         display: block;
         font-family: 'Open Sans', sans-serif;
         color: black;
-        margin: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         padding: 10px;
         box-shadow: 2px 2px 5px 0px gray;
         background-color: lightgray;
         height: 60px;
-        min-width: 700px;
+        /* min-width: 700px; */
         border-radius: 7px;
         text-align: left;
       }
@@ -69,7 +72,7 @@ export class SortableOption extends LitElement {
   // HTML - specific to Lit
   render() {
     return html`
-      <div class="option">
+      <div class="option" draggable="true">
         <slot name="choice">${this.choice}</slot>
         <button class="direction">down</button>
         <button class="direction">up</button>
