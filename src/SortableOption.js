@@ -1,4 +1,6 @@
 import { LitElement, html, css } from 'lit';
+import '@lrnwebcomponents/simple-icon/lib/simple-icon-lite.js';
+import '@lrnwebcomponents/simple-icon/lib/simple-icons.js';
 
 export class SortableOption extends LitElement {
   static get tag() {
@@ -65,6 +67,8 @@ export class SortableOption extends LitElement {
         height: 30px;
         border-radius: 7px;
         float: right;
+        border: transparent;
+        box-shadow: 2px 2px 5px 0px gray;
       }
     `;
   }
@@ -74,8 +78,12 @@ export class SortableOption extends LitElement {
     return html`
       <div class="option" draggable="true">
         <slot name="choice">${this.choice}</slot>
-        <button class="direction">down</button>
-        <button class="direction">up</button>
+        <button class="direction">
+          <simple-icon-lite icon="expand-more"></simple-icon-lite>
+        </button>
+        <button class="direction">
+          <simple-icon-lite icon="expand-less"></simple-icon-lite>
+        </button>
       </div>
     `;
   }
