@@ -66,16 +66,19 @@ These are dedicated status check-ins as this is a multi-week project
   - The user should be able to view correct answers.
   - The user should be able to retry the problem having it reset back to its original state.
 ### Check-in 2
+- Meetings
+  - Met online and messaged largely over text working through logic questions and when discussing design options.
 - Progress Made:
-  - began working on Sortable and SortableOption classes
+  - began working on Sortable and SortableOption elements
   - created basic sortable option boxes to begin working on functionality 
+  - Basic UI Sorting/dragging interaction implementation and testing
 - Anticipated Delegation of Work:
-  - Nick: Logic for interactions and Sortable
+  - Nick: Logic for interactions and SortableFrame
   - Bailey: SortableOption and Storyboard
   - Noelle: Checking and Answers features
   - Nicole: Tests, Checking and Answers fetures
 - Questions/Problems
-  - None at the moment
+  - Running into a UI sorting issue where we cannot drop the same row twice in a dropzone. Could this be an id-related issue or something different?
 ### Check-in 3
 - 
 - 
