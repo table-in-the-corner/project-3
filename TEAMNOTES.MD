@@ -80,8 +80,12 @@ These are dedicated status check-ins as this is a multi-week project
 - Questions/Problems
   - Running into a UI sorting issue where we cannot drop the same row twice in a dropzone. Could this be an id-related issue or something different?
 ### Check-in 3
-- 
-- 
+- Meetings:
+  - Messaged largely over text due to being home for break and working 
+- Progress Made:
+   - 
+- Next Steps:
+   -  
 ### Check-in 4
 - 
 - 
