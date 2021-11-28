@@ -81,11 +81,19 @@ These are dedicated status check-ins as this is a multi-week project
   - Running into a UI sorting issue where we cannot drop the same row twice in a dropzone. Could this be an id-related issue or something different?
 ### Check-in 3
 - Meetings:
-  - Messaged largely over text due to being home for break and working 
+  - Messaged largely over text due to being home for break 
 - Progress Made:
-   - 
+   - Worked on rendering options
+   - Added the feature to select different questions
+   - Made progress on the drag functionality
+   - Created the scoring feature
+- Insight Gained from issues:
+  - Learned we need to switch to dynmaic option rendering
+  - Re-do and think the logic behind dragging and look into recommendations
+  - Slots may be useful when working with question elements
 - Next Steps:
-   -  
+   -  Continue working on the Storyboard, tests, and logic
+ 
 ### Check-in 4
 - 
 - 
