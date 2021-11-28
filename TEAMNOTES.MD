@@ -92,7 +92,10 @@ These are dedicated status check-ins as this is a multi-week project
   - Re-do and think the logic behind dragging and look into recommendations
   - Slots may be useful when working with question elements
 - Next Steps:
-   -  Continue working on the Storyboard, tests, and logic
+   -  Continue working on the all aspects of the functionality of the project
+   -  Add onto Storybook features
+   -  Create testing
+   -  Continue working on the rendering options 
  
 ### Check-in 4
 - 
