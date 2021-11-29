@@ -71,7 +71,7 @@ These are dedicated status check-ins as this is a multi-week project
 - Progress Made:
   - began working on Sortable and SortableOption elements
   - created basic sortable option boxes to begin working on functionality 
-  - Basic UI Sorting/dragging interaction implementation and testing
+  - Basic UI Sorting/dragging interaction implementation (still testing)
 - Anticipated Delegation of Work:
   - Nick: Logic for interactions and SortableFrame
   - Bailey: SortableOption and Storyboard
@@ -80,8 +80,23 @@ These are dedicated status check-ins as this is a multi-week project
 - Questions/Problems
   - Running into a UI sorting issue where we cannot drop the same row twice in a dropzone. Could this be an id-related issue or something different?
 ### Check-in 3
-- 
-- 
+- Meetings:
+  - Messaged largely over text due to being home for break 
+- Progress Made:
+   - Worked on rendering options
+   - Added the feature to select different questions
+   - Made progress on the drag functionality
+   - Created the scoring feature
+- Insight Gained from issues:
+  - Learned we need to switch to dynmaic option rendering
+  - Re-do and think the logic behind dragging and look into recommendations
+  - Slots may be useful when working with question elements
+- Next Steps:
+   -  Continue working on the all aspects of the functionality of the project
+   -  Add onto Storybook features
+   -  Create testing
+   -  Continue working on the rendering options 
+ 
 ### Check-in 4
 - 
 - 
