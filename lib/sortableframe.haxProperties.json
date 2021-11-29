@@ -2,10 +2,10 @@
     "canScale": false,
     "canPosition": false,
     "canEditSource": true,
-    "contentEditable": true,
+    "contentEditable": false,
     "gizmo": {
-      "title": "Sortable",
-      "description": "An element to improve the future of education",
+      "title": "Sortable Frame",
+      "description": "An ordering game",
       "icon": "credit-card",
       "color": "blue",
       "groups": ["Content", "Education"]
@@ -24,10 +24,11 @@
     },
     "demoSchema": [
       {
-        "tag": "SortableOption",
+        "tag": "SortableFrame",
         "properties": {
             "need": "the future",
-            "choice": "PenStat"
+            "questionNumber": "1",
+            "activeQuestion": "ABC"
         },
         "content": "<p>Some internal slotted content</p>"
       }
