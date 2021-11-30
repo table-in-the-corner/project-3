@@ -112,6 +112,7 @@ export class SortableFrame extends LitElement {
     console.log(this.numberIncorrect)
   }
 
+  
   reorder(){
     document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('#reorder').disabled = true;
     document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('#check').disabled = false;
@@ -119,6 +120,14 @@ export class SortableFrame extends LitElement {
       this.shadowRoot.querySelector('#options').children[index].shadowRoot.querySelector('.option').setAttribute('draggable', true);
     }
   }
+  reset(){
+    this.shuffle();
+    document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('#reorder').disabled = true;
+    document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('#check').disabled = false;
+    for(var index=0; index < this.shadowRoot.querySelector('#options').children.length; index++){
+    this.shadowRoot.querySelector('#options').children[index].shadowRoot.querySelector('.option').setAttribute('draggable', true);
+  }
+}
 
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
   // this is a sign it is safe to make calls to this.shadowRoot
@@ -265,7 +274,8 @@ export class SortableFrame extends LitElement {
         <div class="statsContainer">
           <h1>Number correct: ${this.numberIncorrect}/${this.questions[0].answers.length}</h1>
           <button id='check' type="button" @click="${this.check}">Check</button>
-          <button id='reorder' @click=${this.reorder}>Reorder</button>
+          <button id='reorder' @click=${this.reorder}>Retry</button>
+          <button id='reset' @click=${this.reset}>Reset</button>
           <h3>Question:</h3>
           <select name="questionList" id="questionList" @change=${this.shuffle}>
           </select>
