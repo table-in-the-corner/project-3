@@ -79,9 +79,10 @@ export class SortableOption extends LitElement {
         }
       }
     }
+    
 
   }
-
+  
   // CSS - specific to Lit
   static get styles() {
     return css`
