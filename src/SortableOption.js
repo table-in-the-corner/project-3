@@ -58,6 +58,8 @@ export class SortableOption extends LitElement {
     var pos = ev.clientY
     var currentIndex = 0;
     this.dragPosition = this.position - this.offsetTop
+    console.log(this.dragPosition)
+    //console.log(this.offsetTop - this.position)
     if(pos!=0){
       this.position = pos;
     }
@@ -74,7 +76,7 @@ export class SortableOption extends LitElement {
         }
       }
       if (this.dragPosition > 0){
-        if (this.offsetTop - this.position < -60){
+        if (this.offsetTop - this.position < 0){
           this.parentElement.insertBefore(this, this.parentElement.children[currentIndex+1].nextElementSibling)
         }
       }

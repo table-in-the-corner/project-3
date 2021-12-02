@@ -39,7 +39,7 @@ export class SortableFrame extends LitElement {
       this.shadowRoot.querySelector('#options').removeChild(this.shadowRoot.querySelector('#options').firstChild)
     }
     this.randomized = [];
-    this.numberIncorrect = 0
+    this.numberIncorrect = 5
     var selectedQuest = this.shadowRoot.querySelector('.statsContainer').querySelector('select')
     this.questions.forEach(question => {
       //https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript?rq=1
@@ -95,7 +95,7 @@ export class SortableFrame extends LitElement {
       }
     }
 
-    this.numberIncorrect = 5 - incorrectAnswers.length;
+    this.numberIncorrect = incorrectAnswers.length;
     if(incorrectAnswers.length > 0){
       for(var index=0; index < this.shadowRoot.querySelector('#options').children.length; index++){
         if(incorrectAnswers.includes(this.shadowRoot.querySelector('#options').children[index].getAttribute("choice"))){
@@ -110,6 +110,7 @@ export class SortableFrame extends LitElement {
     }
     console.log(incorrectAnswers)
     console.log(this.numberIncorrect)
+    //if(this.numberIncorrect)
   }
 
   reorder(){
@@ -117,6 +118,7 @@ export class SortableFrame extends LitElement {
     document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('#check').disabled = false;
     for(var index=0; index < this.shadowRoot.querySelector('#options').children.length; index++){
       this.shadowRoot.querySelector('#options').children[index].shadowRoot.querySelector('.option').setAttribute('draggable', true);
+      this.shadowRoot.querySelector('#options').children[index].removeAttribute('incorrect')
     }
   }
 
@@ -230,6 +232,9 @@ export class SortableFrame extends LitElement {
         border-color: red;
         border-style: solid
       }
+      sortable-option[incorrect]:nth-child(n) {
+        background-color: red;
+      }
     `;
   }
 
@@ -263,9 +268,9 @@ export class SortableFrame extends LitElement {
           ></div> -->
         </div>
         <div class="statsContainer">
-          <h1>Number correct: ${this.numberIncorrect}/${this.questions[0].answers.length}</h1>
+          <h1>Number correct: ${5 - this.numberIncorrect}/${this.questions[0].answers.length}</h1>
           <button id='check' type="button" @click="${this.check}">Check</button>
-          <button id='reorder' @click=${this.reorder}>Reorder</button>
+          <button id='reorder' @click=${this.reorder}>Edit</button>
           <h3>Question:</h3>
           <select name="questionList" id="questionList" @change=${this.shuffle}>
           </select>
