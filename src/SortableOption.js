@@ -19,8 +19,8 @@ export class SortableOption extends LitElement {
   static get properties() {
     return {
       choice: { type: String, reflect: true },
-      position: {type: Number},
-      dragPosition: {type: Number},
+      position: { type: Number },
+      dragPosition: { type: Number },
     };
   }
 
@@ -44,7 +44,7 @@ export class SortableOption extends LitElement {
     super.disconnectedCallback();
   }
 
-  getPosition(){
+  getPosition() {
     var pos = window.event
     var posY = pos.clientY;
     this.position = posY;
@@ -54,35 +54,88 @@ export class SortableOption extends LitElement {
 
   //The Mouse position, drag position, and offSetTop logic was taken nearly directly from Sean's SlimeSorting Implementation
   //The overall idea of how to go about dragging to sort each option was taken from Sean as well
-  drag(ev){
+  drag(ev) {
     var pos = ev.clientY
     var currentIndex = 0;
     this.dragPosition = this.position - this.offsetTop
-    if(pos!=0){
+    if (pos != 0) {
       this.position = pos;
     }
 
-    for (var index=0; index < this.parentElement.children.length; index++){
-      if(this === this.parentElement.children[index]){
+    for (var index = 0; index < this.parentElement.children.length; index++) {
+      if (this === this.parentElement.children[index]) {
         currentIndex = index;
       }
-      if (this.dragPosition < 0){
-        if (this.offsetTop - this.position > 60){
+      if (this.dragPosition < 0) {
+        if (this.offsetTop - this.position > 60) {
           //https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
           //https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
           this.parentElement.insertBefore(this, this.parentElement.children[currentIndex])
         }
       }
-      if (this.dragPosition > 0){
-        if (this.offsetTop - this.position < -60){
-          this.parentElement.insertBefore(this, this.parentElement.children[currentIndex+1].nextElementSibling)
+      if (this.dragPosition > 0) {
+        if (this.offsetTop - this.position < -60) {
+          this.parentElement.insertBefore(this, this.parentElement.children[currentIndex + 1].nextElementSibling)
         }
       }
     }
-    
+
 
   }
-  
+
+  upbtn() {
+    
+    if (this.previousElementSibling != null) {
+      var before = this.previousElementSibling;
+      console.log(before);
+      this.parentNode.insertBefore(this, before)
+    }
+  }
+  // checkbtns() {
+
+  //   // if (this.previousElementSibling == null) {
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if (this.nextElementSibling == null) {
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
+  //   // }
+  //   for (var index = 0; index < this.parentElement.children.length; index++) {
+  //     this.shadowRoot.querySelector(".option").querySelector(".up").disabled = false;
+  //     this.shadowRoot.querySelector(".option").querySelector(".down").disabled = false;
+    
+  //   }
+  //   // this.shadowRoot.children[0].querySelector(".option").querySelector(".up").disabled = true;
+  //   // this.parentElement.children[4].querySelector(".option").querySelector(".up").disabled = true;
+  //   // if (this.previousElementSibling == null) {
+      
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if (this.nextElementSibling == null) {
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
+  //   // }
+  //   // //     this.parentElement.children.index[index].querySelector(".option").querySelector(".up").disabled = false;
+  //   //     this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if(this === this.parentElement.children[0]){
+  //   //   //console.log("this should be disabled");
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if(this === this.parentElement.children[4]){
+
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
+  //   // }
+  // }
+
+
+  downbtn() {
+
+    if (this.nextElementSibling != null) {
+      var after = this.nextElementSibling;
+      this.parentNode.insertBefore(after, this);
+    }
+  }
+
+
   // CSS - specific to Lit
   static get styles() {
     return css`
@@ -123,11 +176,11 @@ export class SortableOption extends LitElement {
     return html`
       <div class="option" draggable="true">
         <slot name="choice">${this.choice}</slot>
-        <button class="direction">
-          <simple-icon-lite icon="expand-more"></simple-icon-lite>
+        <button class="down">
+          <simple-icon-lite icon="expand-more" @click=${this.downbtn}></simple-icon-lite>
         </button>
-        <button class="direction">
-          <simple-icon-lite icon="expand-less"></simple-icon-lite>
+        <button class="up">
+          <simple-icon-lite icon="expand-less" @click=${this.upbtn}></simple-icon-lite>
         </button>
       </div>
     `;

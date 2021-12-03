@@ -36,7 +36,10 @@ export class SortableFrame extends LitElement {
 
   shuffle(){
     while (this.shadowRoot.querySelector('#options').firstChild){
+    
       this.shadowRoot.querySelector('#options').removeChild(this.shadowRoot.querySelector('#options').firstChild)
+      
+      //this.shadowRoot.querySelector('#options').querySelector(".up").disabled;
     }
     this.randomized = [];
     this.numberIncorrect = 0
@@ -66,6 +69,7 @@ export class SortableFrame extends LitElement {
           var node = document.createElement("sortable-option");
           node.setAttribute("choice", answer)
           this.shadowRoot.querySelector('#options').appendChild(node);
+
         })
         //console.log(this.shadowRoot.querySelector('#options').childNodes)
       }
