@@ -29,6 +29,31 @@ export class SortableOption extends LitElement {
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')[0]
+        .shadowRoot.querySelector('.up').disabled = true;
+      if (
+        document
+          .querySelector('sortable-frame')
+          .shadowRoot.querySelector('.frame')
+          .querySelector('#options')
+          .querySelectorAll('sortable-option')
+          [this.parentElement.children.length - 1].shadowRoot.querySelector(
+            '.down'
+          )
+      ) {
+        document
+          .querySelector('sortable-frame')
+          .shadowRoot.querySelector('.frame')
+          .querySelector('#options')
+          .querySelectorAll('sortable-option')
+          [this.parentElement.children.length - 1].shadowRoot.querySelector(
+            '.down'
+          ).disabled = true;
+      }
     }
   }
 
@@ -57,7 +82,6 @@ export class SortableOption extends LitElement {
     const pos = ev.clientY;
     let currentIndex = 0;
     this.dragPosition = this.position - this.offsetTop;
-    // console.log(this.dragPosition)
     // console.log(this.offsetTop - this.position)
     if (pos !== 0) {
       this.position = pos;
@@ -72,8 +96,8 @@ export class SortableOption extends LitElement {
         currentIndex = index;
       }
       // if (this.dragPosition < 0){
-      // console.log(this.dragPosition)
-      if (this.offsetTop - this.position > 130) {
+      // console.log(this.offsetTop - this.position)
+      if (this.offsetTop - this.position > 0) {
         // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
         // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
         this.parentElement.insertBefore(
@@ -83,7 +107,7 @@ export class SortableOption extends LitElement {
       }
       // }
       // if (this.dragPosition > 0){
-      if (this.offsetTop - this.position < 30) {
+      if (this.offsetTop - this.position < -80) {
         this.parentElement.insertBefore(
           this,
           this.parentElement.children[currentIndex + 1].nextElementSibling
@@ -96,8 +120,26 @@ export class SortableOption extends LitElement {
   upbtn() {
     if (this.previousElementSibling != null) {
       const before = this.previousElementSibling;
-      console.log(before);
+
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        .forEach(option => {
+          option.shadowRoot.querySelectorAll('button').forEach(but => {
+            // eslint-disable-next-line no-param-reassign
+            but.disabled = false;
+          });
+        });
+
       this.parentNode.insertBefore(this, before);
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')[0]
+        .shadowRoot.querySelector('.up').disabled = true;
     }
   }
   // checkbtns() {
@@ -138,7 +180,28 @@ export class SortableOption extends LitElement {
   downbtn() {
     if (this.nextElementSibling != null) {
       const after = this.nextElementSibling;
+
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        .forEach(option => {
+          option.shadowRoot.querySelectorAll('button').forEach(but => {
+            // eslint-disable-next-line no-param-reassign
+            but.disabled = false;
+          });
+        });
+
       this.parentNode.insertBefore(after, this);
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        [this.parentElement.children.length - 1].shadowRoot.querySelector(
+          '.down'
+        ).disabled = true;
     }
   }
 
@@ -149,7 +212,11 @@ export class SortableOption extends LitElement {
         display: block;
       }
       .option {
-        display: block;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        /* display: block; */
         font-family: 'Open Sans', sans-serif;
         color: black;
         margin-left: 20px;
@@ -175,6 +242,18 @@ export class SortableOption extends LitElement {
         border: transparent;
         box-shadow: 2px 2px 5px 0px gray;
       }
+      .buttonContainer {
+        display: flex;
+        flex-direction: row;
+      }
+      .buttonContainer,
+      button {
+        margin-left: 5px;
+      }
+      .option[draggable='false'] {
+        background-color: rgba(0, 0, 0, 0.2);
+        color: rgba(0, 0, 0, 0.3);
+      }
     `;
   }
 
@@ -183,18 +262,20 @@ export class SortableOption extends LitElement {
     return html`
       <div class="option" draggable="true">
         <slot name="choice">${this.choice}</slot>
-        <button class="down">
-          <simple-icon-lite
-            icon="expand-more"
-            @click=${this.downbtn}
-          ></simple-icon-lite>
-        </button>
-        <button class="up">
-          <simple-icon-lite
-            icon="expand-less"
-            @click=${this.upbtn}
-          ></simple-icon-lite>
-        </button>
+        <div class="buttonContainer">
+          <button class="down">
+            <simple-icon-lite
+              icon="expand-more"
+              @click=${this.downbtn}
+            ></simple-icon-lite>
+          </button>
+          <button class="up">
+            <simple-icon-lite
+              icon="expand-less"
+              @click=${this.upbtn}
+            ></simple-icon-lite>
+          </button>
+        </div>
       </div>
     `;
   }

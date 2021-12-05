@@ -28,14 +28,17 @@ export class SortableFrame extends LitElement {
     ];
     this.correctAnswers = [];
     this.randomized = [];
-    this.activeQuestion = this.questions[0].question;
+    this.currAnswers = [];
+    this.questionNumber = 1;
+    this.activeQuestion = '';
+    // this.activeQuestion = this.questions[0].question;
     this.numberIncorrect = 0;
   }
 
   static get properties() {
     return {
-      questionNumber: { type: String },
-      activeQuestion: { type: String },
+      questionNumber: { type: String, reflect: true },
+      activeQuestion: { type: String, reflect: true },
       numberIncorrect: { type: Number },
     };
   }
@@ -46,22 +49,27 @@ export class SortableFrame extends LitElement {
         .querySelector('#options')
         .removeChild(this.shadowRoot.querySelector('#options').firstChild);
     }
+
     this.randomized = [];
+    this.correctAnswers = [];
     this.numberIncorrect = 5;
     const selectedQuest = this.shadowRoot
       .querySelector('.statsContainer')
       .querySelector('select');
     this.questions.forEach(question => {
       // https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript?rq=1
-      // eslint-disable-next-line radix
+
       if (
+        // eslint-disable-next-line radix
         question.questionNumber ===
         parseInt(selectedQuest.options[selectedQuest.selectedIndex].value)
       ) {
         this.activeQuestion = question.question;
+        this.questionNumber = question.questionNumber;
         question.answers.forEach(answer => {
           this.correctAnswers.push(answer);
           this.randomized.push(answer);
+          this.currAnswers = [];
         });
 
         // Fisher-Yates (Knuth) Shuffle
@@ -83,11 +91,19 @@ export class SortableFrame extends LitElement {
           const node = document.createElement('sortable-option');
           node.setAttribute('choice', answer);
           this.shadowRoot.querySelector('#options').appendChild(node);
-
-        })
-        //console.log(this.shadowRoot.querySelector('#options').childNodes)
+        });
+        // console.log(this.shadowRoot.querySelector('#options').childNodes[0])
       }
     });
+    // document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option').forEach(option => {
+    //   option.shadowRoot.querySelectorAll('button').forEach(but => {
+    //     // eslint-disable-next-line no-param-reassign
+    //     console.log(but)
+    //   })
+    // })
+    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option')[0])
+    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option').querySelector('.up'))
+    // document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option')[0].shadowRoot.querySelector('.up').disabled = true
   }
 
   check() {
@@ -99,8 +115,26 @@ export class SortableFrame extends LitElement {
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#reorder').disabled = false;
-    const currAnswers = [];
+    document
+      .querySelector('sortable-frame')
+      .shadowRoot.querySelector('.frame')
+      .querySelector('#options')
+      .querySelectorAll('sortable-option')
+      .forEach(option => {
+        option.shadowRoot.querySelectorAll('button').forEach(but => {
+          // eslint-disable-next-line no-param-reassign
+          but.disabled = true;
+        });
+        option.shadowRoot.querySelectorAll('button').forEach(simpleIcon => {
+          // eslint-disable-next-line no-param-reassign
+          simpleIcon.disabled = true;
+        });
+        // console.log(option.shadowRoot.querySelectorAll('button'))
+      });
+    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option'))
+    // const currAnswers = [];
     const incorrectAnswers = [];
+    this.currAnswers = [];
     // console.log("Random " + this.randomized);
     // console.log("Correct " + this.correctAnswers)
     for (
@@ -108,7 +142,7 @@ export class SortableFrame extends LitElement {
       index < this.shadowRoot.querySelector('#options').children.length;
       index += 1
     ) {
-      currAnswers.push(
+      this.currAnswers.push(
         this.shadowRoot
           .querySelector('#options')
           .children[index].getAttribute('choice')
@@ -122,13 +156,13 @@ export class SortableFrame extends LitElement {
         .setAttribute('draggable', false);
     }
     // console.log(currAnswers)
-    for (let i = 0; i < currAnswers.length; i += 1) {
+    for (let i = 0; i < this.currAnswers.length; i += 1) {
       for (let j = 0; j < this.correctAnswers.length; j += 1) {
-        if (currAnswers[i] === this.correctAnswers[i]) {
+        if (this.currAnswers[i] === this.correctAnswers[i]) {
           // eslint-disable-next-line no-continue
           continue;
-        } else if (!incorrectAnswers.includes(currAnswers[i])) {
-          incorrectAnswers.push(currAnswers[i]);
+        } else if (!incorrectAnswers.includes(this.currAnswers[i])) {
+          incorrectAnswers.push(this.currAnswers[i]);
         }
       }
     }
@@ -160,6 +194,26 @@ export class SortableFrame extends LitElement {
     // console.log(incorrectAnswers)
     // console.log(this.numberIncorrect)
     // if(this.numberIncorrect)
+
+    // All answers correct!
+    if (this.numberIncorrect === 0) {
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        .forEach(option => {
+          /* eslint-disable no-param-reassign */
+          option.shadowRoot.querySelector('.option').style.backgroundColor =
+            'green';
+          option.shadowRoot.querySelector('slot').style.color = 'black';
+          /* eslint-enable no-param-reassign */
+          document
+            .querySelector('sortable-frame')
+            .shadowRoot.querySelector('.statsContainer')
+            .querySelector('#reorder').disabled = true;
+        });
+    }
   }
 
   reorder() {
@@ -171,6 +225,17 @@ export class SortableFrame extends LitElement {
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#check').disabled = false;
+    document
+      .querySelector('sortable-frame')
+      .shadowRoot.querySelector('.frame')
+      .querySelector('#options')
+      .querySelectorAll('sortable-option')
+      .forEach(option => {
+        option.shadowRoot.querySelectorAll('button').forEach(but => {
+          // eslint-disable-next-line no-param-reassign
+          but.disabled = false;
+        });
+      });
     for (
       let index = 0;
       index < this.shadowRoot.querySelector('#options').children.length;
@@ -336,6 +401,14 @@ export class SortableFrame extends LitElement {
       sortable-option[incorrect]:nth-child(n) {
         background-color: red;
       }
+      .questionContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
     `;
   }
 
@@ -343,22 +416,34 @@ export class SortableFrame extends LitElement {
   render() {
     return html`
       <div class="frame">
-        <h1 style="padding-left: 20px">${this.activeQuestion}</h1>
+        <div class="questionContainer">
+          <h1>${this.activeQuestion}</h1>
+        </div>
         <div slot="options" id="options"></div>
         <div class="statsContainer">
           <h1>
             Number correct:
-            ${5 - this.numberIncorrect}/${this.questions[0].answers.length}
+            ${this.questions[this.questionNumber - 1].answers.length -
+            this.numberIncorrect}/${this.questions[this.questionNumber - 1]
+              .answers.length}
           </h1>
-          <button id="check" type="button" @click="${this.check}">Check</button>
-          <button id="reorder" @click=${this.reorder}>Retry</button>
-          <button id="reset" @click=${this.reset}>Reset</button>
-          <h3>Question:</h3>
-          <select
-            name="questionList"
-            id="questionList"
-            @change=${this.shuffle}
-          ></select>
+          <div>
+            <button id="check" type="button" @click="${this.check}">
+              Check
+            </button>
+            <button id="reorder" @click=${this.reorder}>Retry</button>
+            <button id="reset" @click=${this.reset}>Reset</button>
+          </div>
+          <div
+            style="display: flex; flex-direction: row; justify-content: center; align-items: center"
+          >
+            <h3 style="padding-right: 5px">Question:</h3>
+            <select
+              name="questionList"
+              id="questionList"
+              @change=${this.shuffle && this.reset}
+            ></select>
+          </div>
         </div>
       </div>
     `;

@@ -1,21 +1,21 @@
 {
-    "canScale": false,
+    "canScale": true,
     "canPosition": false,
     "canEditSource": true,
-    "contentEditable": false,
+    "contentEditable": true,
     "gizmo": {
       "title": "Sortable Frame",
       "description": "An ordering game",
-      "icon": "credit-card",
-      "color": "blue",
-      "groups": ["Content", "Education"]
+      "icon": "sort",
+      "color": "green",
+      "groups": ["Text"]
     },
     "settings": {
       "configure": [
         {
-          "property": "need",
-          "title": "Need",
-          "description": "What we all need",
+          "property": "activequestion",
+          "title": "Question",
+          "description": "What question are you posing?",
           "inputMethod": "textfield"
         }
       ],
@@ -24,13 +24,12 @@
     },
     "demoSchema": [
       {
-        "tag": "SortableFrame",
+        "tag": "sortable-frame",
         "properties": {
-            "need": "the future",
-            "questionNumber": "1",
-            "activeQuestion": "ABC"
+            "question": "1",
+            "activequestion": "Sample Question?"
         },
-        "content": "<p>Some internal slotted content</p>"
+        "content": "<sortable-option choice='test'></sortable-option>"
       }
     ]
   }

@@ -1,11 +1,11 @@
 {
-    "canScale": false,
+    "canScale": true,
     "canPosition": false,
     "canEditSource": true,
     "contentEditable": true,
     "gizmo": {
-      "title": "Sortable",
-      "description": "An element to improve the future of education",
+      "title": "Sortable Option",
+      "description": "An sorting game option",
       "icon": "credit-card",
       "color": "blue",
       "groups": ["Content", "Education"]
@@ -24,7 +24,7 @@
     },
     "demoSchema": [
       {
-        "tag": "SortableOption",
+        "tag": "sortable-option",
         "properties": {
             "need": "the future",
             "choice": "PenStat"
