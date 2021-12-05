@@ -83,8 +83,9 @@ export class SortableFrame extends LitElement {
           const node = document.createElement('sortable-option');
           node.setAttribute('choice', answer);
           this.shadowRoot.querySelector('#options').appendChild(node);
-        });
-        // console.log(this.shadowRoot.querySelector('#options').childNodes)
+
+        })
+        //console.log(this.shadowRoot.querySelector('#options').childNodes)
       }
     });
   }

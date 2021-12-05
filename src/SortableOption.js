@@ -45,8 +45,8 @@ export class SortableOption extends LitElement {
   }
 
   getPosition() {
-    const pos = window.event;
-    const posY = pos.clientY;
+    var pos = window.event
+    var posY = pos.clientY;
     this.position = posY;
     // console.log(this.position)
   }
@@ -91,7 +91,62 @@ export class SortableOption extends LitElement {
       }
       // }
     }
+
+
   }
+
+  upbtn() {
+    
+    if (this.previousElementSibling != null) {
+      var before = this.previousElementSibling;
+      console.log(before);
+      this.parentNode.insertBefore(this, before)
+    }
+  }
+  // checkbtns() {
+
+  //   // if (this.previousElementSibling == null) {
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if (this.nextElementSibling == null) {
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
+  //   // }
+  //   for (var index = 0; index < this.parentElement.children.length; index++) {
+  //     this.shadowRoot.querySelector(".option").querySelector(".up").disabled = false;
+  //     this.shadowRoot.querySelector(".option").querySelector(".down").disabled = false;
+    
+  //   }
+  //   // this.shadowRoot.children[0].querySelector(".option").querySelector(".up").disabled = true;
+  //   // this.parentElement.children[4].querySelector(".option").querySelector(".up").disabled = true;
+  //   // if (this.previousElementSibling == null) {
+      
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if (this.nextElementSibling == null) {
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
+  //   // }
+  //   // //     this.parentElement.children.index[index].querySelector(".option").querySelector(".up").disabled = false;
+  //   //     this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if(this === this.parentElement.children[0]){
+  //   //   //console.log("this should be disabled");
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
+  //   // }
+  //   // if(this === this.parentElement.children[4]){
+
+  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
+  //   // }
+  // }
+
+
+  downbtn() {
+
+    if (this.nextElementSibling != null) {
+      var after = this.nextElementSibling;
+      this.parentNode.insertBefore(after, this);
+    }
+  }
+
 
   // CSS - specific to Lit
   static get styles() {
@@ -133,11 +188,11 @@ export class SortableOption extends LitElement {
     return html`
       <div class="option" draggable="true">
         <slot name="choice">${this.choice}</slot>
-        <button class="direction">
-          <simple-icon-lite icon="expand-more"></simple-icon-lite>
+        <button class="down">
+          <simple-icon-lite icon="expand-more" @click=${this.downbtn}></simple-icon-lite>
         </button>
-        <button class="direction">
-          <simple-icon-lite icon="expand-less"></simple-icon-lite>
+        <button class="up">
+          <simple-icon-lite icon="expand-less" @click=${this.upbtn}></simple-icon-lite>
         </button>
       </div>
     `;
