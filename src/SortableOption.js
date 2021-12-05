@@ -45,8 +45,8 @@ export class SortableOption extends LitElement {
   }
 
   getPosition() {
-    var pos = window.event
-    var posY = pos.clientY;
+    const pos = window.event;
+    const posY = pos.clientY;
     this.position = posY;
     // console.log(this.position)
   }
@@ -91,16 +91,13 @@ export class SortableOption extends LitElement {
       }
       // }
     }
-
-
   }
 
   upbtn() {
-    
     if (this.previousElementSibling != null) {
-      var before = this.previousElementSibling;
+      const before = this.previousElementSibling;
       console.log(before);
-      this.parentNode.insertBefore(this, before)
+      this.parentNode.insertBefore(this, before);
     }
   }
   // checkbtns() {
@@ -114,12 +111,12 @@ export class SortableOption extends LitElement {
   //   for (var index = 0; index < this.parentElement.children.length; index++) {
   //     this.shadowRoot.querySelector(".option").querySelector(".up").disabled = false;
   //     this.shadowRoot.querySelector(".option").querySelector(".down").disabled = false;
-    
+
   //   }
   //   // this.shadowRoot.children[0].querySelector(".option").querySelector(".up").disabled = true;
   //   // this.parentElement.children[4].querySelector(".option").querySelector(".up").disabled = true;
   //   // if (this.previousElementSibling == null) {
-      
+
   //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
   //   // }
   //   // if (this.nextElementSibling == null) {
@@ -138,15 +135,12 @@ export class SortableOption extends LitElement {
   //   // }
   // }
 
-
   downbtn() {
-
     if (this.nextElementSibling != null) {
-      var after = this.nextElementSibling;
+      const after = this.nextElementSibling;
       this.parentNode.insertBefore(after, this);
     }
   }
-
 
   // CSS - specific to Lit
   static get styles() {
@@ -171,7 +165,8 @@ export class SortableOption extends LitElement {
         text-align: left;
       }
 
-      .direction {
+      .up,
+      .down {
         margin: 10px;
         background-color: white;
         height: 30px;
@@ -189,10 +184,16 @@ export class SortableOption extends LitElement {
       <div class="option" draggable="true">
         <slot name="choice">${this.choice}</slot>
         <button class="down">
-          <simple-icon-lite icon="expand-more" @click=${this.downbtn}></simple-icon-lite>
+          <simple-icon-lite
+            icon="expand-more"
+            @click=${this.downbtn}
+          ></simple-icon-lite>
         </button>
         <button class="up">
-          <simple-icon-lite icon="expand-less" @click=${this.upbtn}></simple-icon-lite>
+          <simple-icon-lite
+            icon="expand-less"
+            @click=${this.upbtn}
+          ></simple-icon-lite>
         </button>
       </div>
     `;
