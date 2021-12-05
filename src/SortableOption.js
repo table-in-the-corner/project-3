@@ -232,7 +232,8 @@ export class SortableOption extends LitElement {
         text-align: left;
       }
 
-      .direction {
+      .up,
+      .down {
         margin: 10px;
         background-color: white;
         height: 30px;
