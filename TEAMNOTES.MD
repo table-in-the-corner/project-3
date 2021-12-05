@@ -98,5 +98,15 @@ These are dedicated status check-ins as this is a multi-week project
    -  Continue working on the rendering options 
  
 ### Check-in 4
-- 
-- 
+- What we did: 
+  - implemented the arrow sorting functionality
+  - handled disabling sort buttons
+  - updated correct option UI
+  - linked Sorting frame to Hax
+- To Do:
+  - Storybook
+  - Tests
+  - Hax wiring for Sortable options
+  - fix simple icon still being clickable after being disabled
+- Questions:
+  - How can we fix the simple icon still being clickable after the button is disabled? (for up and down arrows)
