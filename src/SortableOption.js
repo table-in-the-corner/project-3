@@ -10,17 +10,17 @@ export class SortableOption extends LitElement {
   constructor() {
     super();
     this.choice = 'option 1';
-    this.addEventListener('drag', this.drag)
+    this.addEventListener('drag', this.drag);
     this.position = 0;
     this.dragPosition = 0;
-    //this.addEventListener('mou')
+    // this.addEventListener('mou')
   }
 
   static get properties() {
     return {
       choice: { type: String, reflect: true },
-      position: {type: Number},
-      dragPosition: {type: Number},
+      position: { type: Number },
+      dragPosition: { type: Number },
     };
   }
 
@@ -44,47 +44,55 @@ export class SortableOption extends LitElement {
     super.disconnectedCallback();
   }
 
-  getPosition(){
-    var pos = window.event
-    var posY = pos.clientY;
+  getPosition() {
+    const pos = window.event;
+    const posY = pos.clientY;
     this.position = posY;
-    console.log(this.position)
+    // console.log(this.position)
   }
 
-
-  //The Mouse position, drag position, and offSetTop logic was taken nearly directly from Sean's SlimeSorting Implementation
-  //The overall idea of how to go about dragging to sort each option was taken from Sean as well
-  drag(ev){
-    var pos = ev.clientY
-    var currentIndex = 0;
-    this.dragPosition = this.position - this.offsetTop
-    console.log(this.dragPosition)
-    //console.log(this.offsetTop - this.position)
-    if(pos!=0){
+  // The Mouse position, drag position, and offSetTop logic was taken nearly directly from Sean's SlimeSorting Implementation
+  // The overall idea of how to go about dragging to sort each option was taken from Sean as well
+  drag(ev) {
+    const pos = ev.clientY;
+    let currentIndex = 0;
+    this.dragPosition = this.position - this.offsetTop;
+    // console.log(this.dragPosition)
+    // console.log(this.offsetTop - this.position)
+    if (pos !== 0) {
       this.position = pos;
     }
-
-    for (var index=0; index < this.parentElement.children.length; index++){
-      if(this === this.parentElement.children[index]){
+    // console.log(this.offsetTop - this.position)
+    for (
+      let index = 0;
+      index < this.parentElement.children.length;
+      index += 1
+    ) {
+      if (this === this.parentElement.children[index]) {
         currentIndex = index;
       }
-      if (this.dragPosition < 0){
-        if (this.offsetTop - this.position > 60){
-          //https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
-          //https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
-          this.parentElement.insertBefore(this, this.parentElement.children[currentIndex])
-        }
+      // if (this.dragPosition < 0){
+      // console.log(this.dragPosition)
+      if (this.offsetTop - this.position > 130) {
+        // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+        // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+        this.parentElement.insertBefore(
+          this,
+          this.parentElement.children[currentIndex]
+        );
       }
-      if (this.dragPosition > 0){
-        if (this.offsetTop - this.position < 0){
-          this.parentElement.insertBefore(this, this.parentElement.children[currentIndex+1].nextElementSibling)
-        }
+      // }
+      // if (this.dragPosition > 0){
+      if (this.offsetTop - this.position < 30) {
+        this.parentElement.insertBefore(
+          this,
+          this.parentElement.children[currentIndex + 1].nextElementSibling
+        );
       }
+      // }
     }
-    
-
   }
-  
+
   // CSS - specific to Lit
   static get styles() {
     return css`
