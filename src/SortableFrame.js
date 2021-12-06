@@ -1,5 +1,9 @@
 import { LitElement, html, css } from 'lit';
 
+const golden = new URL('../assets/goldenretriever.jpeg', import.meta.url).href;
+const husky = new URL('../assets/husky.jpeg', import.meta.url).href;
+const memedog = new URL('../assets/memedog.jpeg', import.meta.url).href;
+
 export class SortableFrame extends LitElement {
   static get tag() {
     return 'sortable-frame';
@@ -24,6 +28,11 @@ export class SortableFrame extends LitElement {
         questionNumber: 2,
         question: 'Best food?',
         answers: ['Pizza', 'Salad', 'Candy', 'Waffles', 'Peanut Butter'],
+      },
+      {
+        questionNumber: 3,
+        question: 'Best dog?',
+        answers: [golden, husky, memedog],
       },
     ];
     this.correctAnswers = [];
@@ -52,7 +61,7 @@ export class SortableFrame extends LitElement {
 
     this.randomized = [];
     this.correctAnswers = [];
-    this.numberIncorrect = 5;
+    // this.numberIncorrect = 5;
     const selectedQuest = this.shadowRoot
       .querySelector('.statsContainer')
       .querySelector('select');
@@ -62,7 +71,7 @@ export class SortableFrame extends LitElement {
       if (
         // eslint-disable-next-line radix
         question.questionNumber ===
-        parseInt(selectedQuest.options[selectedQuest.selectedIndex].value)
+        parseInt(selectedQuest.options[selectedQuest.selectedIndex].value, 10)
       ) {
         this.activeQuestion = question.question;
         this.questionNumber = question.questionNumber;
@@ -95,6 +104,7 @@ export class SortableFrame extends LitElement {
         // console.log(this.shadowRoot.querySelector('#options').childNodes[0])
       }
     });
+    this.numberIncorrect = this.randomized.length;
     // document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option').forEach(option => {
     //   option.shadowRoot.querySelectorAll('button').forEach(but => {
     //     // eslint-disable-next-line no-param-reassign

@@ -100,13 +100,16 @@ These are dedicated status check-ins as this is a multi-week project
 ### Check-in 4
 - What we did: 
   - implemented the arrow sorting functionality
-  - handled disabling sort buttons
+  - handled disabling sort buttons (Top & Bottom, Disabled when checking answers)
   - updated correct option UI
-  - linked Sorting frame to Hax
+  - linked Sorting frame to HAX
+  - Multiple implementations shown by selecting different question numbers with the Question dropdown in the lower right (Q3 has images)
 - To Do:
-  - Storybook
-  - Tests
+  - Storybook linking
+  - Writing our Tests
   - Hax wiring for Sortable options
   - fix simple icon still being clickable after being disabled
 - Questions:
   - How can we fix the simple icon still being clickable after the button is disabled? (for up and down arrows)
+  - We are having trouble with the best way to support linking HAX with each sortable option, our questions do not remain loaded in the component. Is there a way to dynamically support this questions and options within HAX, or is there a way to link a JSON file?
+  - Should we support adding more questions and options within HAX? This goes with the previous question.
