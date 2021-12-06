@@ -71,7 +71,7 @@ export class SortableFrame extends LitElement {
       if (
         // eslint-disable-next-line radix
         question.questionNumber ===
-        parseInt(selectedQuest.options[selectedQuest.selectedIndex].value)
+        parseInt(selectedQuest.options[selectedQuest.selectedIndex].value, 10)
       ) {
         this.activeQuestion = question.question;
         this.questionNumber = question.questionNumber;

@@ -240,12 +240,6 @@ export class SortableOption extends LitElement {
         });
 
       this.parentNode.insertBefore(after, this);
-      // console.log(document
-      //   .querySelector('sortable-frame')
-      //   .shadowRoot.querySelector('.frame')
-      //   .querySelector('#options')
-      //   .querySelectorAll('sortable-option')
-      //   [this.parentElement.children.length - 1])
       document
         .querySelector('sortable-frame')
         .shadowRoot.querySelector('.frame')
