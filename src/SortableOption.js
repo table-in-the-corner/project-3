@@ -57,6 +57,44 @@ export class SortableOption extends LitElement {
     }
   }
 
+  // updated fires every time a property defined above changes
+  // this allows you to react to variables changing and use javascript to perform logic
+  updated(changedProperties) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (
+        propName === 'choice' &&
+        this[propName] === 'http://localhost:8000/assets/goldenretriever.jpeg'
+      ) {
+        const node = document.createElement('img');
+        node.setAttribute('alt', '');
+        node.setAttribute('src', this[propName]);
+        node.style.width = '50px';
+        this.shadowRoot.querySelector('slot').appendChild(node);
+        // console.log(this.shadowRoot.querySelector('slot'))
+      }
+      if (
+        propName === 'choice' &&
+        this[propName] === 'http://localhost:8000/assets/husky.jpeg'
+      ) {
+        const node = document.createElement('img');
+        node.setAttribute('alt', '');
+        node.setAttribute('src', this[propName]);
+        node.style.width = '50px';
+        this.shadowRoot.querySelector('slot').appendChild(node);
+      }
+      if (
+        propName === 'choice' &&
+        this[propName] === 'http://localhost:8000/assets/memedog.jpeg'
+      ) {
+        const node = document.createElement('img');
+        node.setAttribute('alt', '');
+        node.setAttribute('src', this[propName]);
+        node.style.width = '50px';
+        this.shadowRoot.querySelector('slot').appendChild(node);
+      }
+    });
+  }
+
   // HTMLElement life-cycle, element has been connected to the page / added or moved
   // this fires EVERY time the element is moved
   connectedCallback() {
@@ -140,6 +178,14 @@ export class SortableOption extends LitElement {
         .querySelector('#options')
         .querySelectorAll('sortable-option')[0]
         .shadowRoot.querySelector('.up').disabled = true;
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        [this.parentElement.children.length - 1].shadowRoot.querySelector(
+          '.down'
+        ).disabled = true;
     }
   }
   // checkbtns() {
@@ -194,6 +240,12 @@ export class SortableOption extends LitElement {
         });
 
       this.parentNode.insertBefore(after, this);
+      // console.log(document
+      //   .querySelector('sortable-frame')
+      //   .shadowRoot.querySelector('.frame')
+      //   .querySelector('#options')
+      //   .querySelectorAll('sortable-option')
+      //   [this.parentElement.children.length - 1])
       document
         .querySelector('sortable-frame')
         .shadowRoot.querySelector('.frame')
@@ -202,6 +254,12 @@ export class SortableOption extends LitElement {
         [this.parentElement.children.length - 1].shadowRoot.querySelector(
           '.down'
         ).disabled = true;
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')[0]
+        .shadowRoot.querySelector('.up').disabled = true;
     }
   }
 
@@ -261,7 +319,7 @@ export class SortableOption extends LitElement {
   render() {
     return html`
       <div class="option" draggable="true">
-        <slot name="choice">${this.choice}</slot>
+        <slot name="choice">${this.choice} </slot>
         <div class="buttonContainer">
           <button class="down">
             <simple-icon-lite
