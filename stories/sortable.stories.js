@@ -1,22 +1,18 @@
 import { html } from 'lit';
 
-import '../rename-me.js';
+import '../sortable-options.js';
 
 export default {
-  title: 'Rename me',
-  component: 'rename-me',
+  title: 'Option',
+  component: 'sortable-option',
   argTypes: {
-    need: { control: 'text' },
+    question: { control: 'text' },
   },
 };
 
-function Template({ need = 'rename', slot }) {
-  return html` <rename-me need="${need}"> ${slot} </rename-me> `;
+function Template({ question = this.question }) {
+  return html` <sortable-frame activequestion="${question}">
+    <slot name="options"></slot>
+  </sortable-frame>`;
 }
-export const Card = Template.bind({});
-
-export const ScienceCard = Template.bind({});
-ScienceCard.args = {
-  need: 'science',
-  slot: html`<p>slotted content that should render</p>`,
-};
+export const SortableOptions = Template.bind({});
