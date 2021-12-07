@@ -124,6 +124,7 @@ export class SortableOption extends LitElement {
     if (pos !== 0) {
       this.position = pos;
     }
+
     // console.log(this.offsetTop - this.position)
     for (
       let index = 0;
@@ -151,6 +152,7 @@ export class SortableOption extends LitElement {
           this.parentElement.children[currentIndex + 1].nextElementSibling
         );
       }
+      this.disable();
       // }
     }
   }
@@ -172,20 +174,22 @@ export class SortableOption extends LitElement {
         });
 
       this.parentNode.insertBefore(this, before);
-      document
-        .querySelector('sortable-frame')
-        .shadowRoot.querySelector('.frame')
-        .querySelector('#options')
-        .querySelectorAll('sortable-option')[0]
-        .shadowRoot.querySelector('.up').disabled = true;
-      document
-        .querySelector('sortable-frame')
-        .shadowRoot.querySelector('.frame')
-        .querySelector('#options')
-        .querySelectorAll('sortable-option')
-        [this.parentElement.children.length - 1].shadowRoot.querySelector(
-          '.down'
-        ).disabled = true;
+
+      this.disable();
+      // document
+      //   .querySelector('sortable-frame')
+      //   .shadowRoot.querySelector('.frame')
+      //   .querySelector('#options')
+      //   .querySelectorAll('sortable-option')[0]
+      //   .shadowRoot.querySelector('.up').disabled = true;
+      // document
+      //   .querySelector('sortable-frame')
+      //   .shadowRoot.querySelector('.frame')
+      //   .querySelector('#options')
+      //   .querySelectorAll('sortable-option')
+      //   [this.parentElement.children.length - 1].shadowRoot.querySelector(
+      //     '.down'
+      //   ).disabled = true;
     }
   }
   // checkbtns() {
@@ -222,6 +226,33 @@ export class SortableOption extends LitElement {
   //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
   //   // }
   // }
+  disable() {
+    document
+      .querySelector('sortable-frame')
+      .shadowRoot.querySelector('.frame')
+      .querySelector('#options')
+      .querySelectorAll('sortable-option')
+      .forEach(option => {
+        option.shadowRoot.querySelectorAll('button').forEach(but => {
+          // eslint-disable-next-line no-param-reassign
+          but.disabled = false;
+        });
+      });
+    document
+      .querySelector('sortable-frame')
+      .shadowRoot.querySelector('.frame')
+      .querySelector('#options')
+      .querySelectorAll('sortable-option')[0]
+      .shadowRoot.querySelector('.up').disabled = true;
+    document
+      .querySelector('sortable-frame')
+      .shadowRoot.querySelector('.frame')
+      .querySelector('#options')
+      .querySelectorAll('sortable-option')
+      [this.parentElement.children.length - 1].shadowRoot.querySelector(
+        '.down'
+      ).disabled = true;
+  }
 
   downbtn() {
     if (this.nextElementSibling != null) {
@@ -240,20 +271,21 @@ export class SortableOption extends LitElement {
         });
 
       this.parentNode.insertBefore(after, this);
-      document
-        .querySelector('sortable-frame')
-        .shadowRoot.querySelector('.frame')
-        .querySelector('#options')
-        .querySelectorAll('sortable-option')
-        [this.parentElement.children.length - 1].shadowRoot.querySelector(
-          '.down'
-        ).disabled = true;
-      document
-        .querySelector('sortable-frame')
-        .shadowRoot.querySelector('.frame')
-        .querySelector('#options')
-        .querySelectorAll('sortable-option')[0]
-        .shadowRoot.querySelector('.up').disabled = true;
+      this.disable();
+      // document
+      //   .querySelector('sortable-frame')
+      //   .shadowRoot.querySelector('.frame')
+      //   .querySelector('#options')
+      //   .querySelectorAll('sortable-option')
+      //   [this.parentElement.children.length - 1].shadowRoot.querySelector(
+      //     '.down'
+      //   ).disabled = true;
+      // document
+      //   .querySelector('sortable-frame')
+      //   .shadowRoot.querySelector('.frame')
+      //   .querySelector('#options')
+      //   .querySelectorAll('sortable-option')[0]
+      //   .shadowRoot.querySelector('.up').disabled = true;
     }
   }
 
@@ -315,17 +347,11 @@ export class SortableOption extends LitElement {
       <div class="option" draggable="true">
         <slot name="choice">${this.choice} </slot>
         <div class="buttonContainer">
-          <button class="down">
-            <simple-icon-lite
-              icon="expand-more"
-              @click=${this.downbtn}
-            ></simple-icon-lite>
+          <button class="down" @click=${this.downbtn}>
+            <simple-icon-lite icon="expand-more"></simple-icon-lite>
           </button>
-          <button class="up">
-            <simple-icon-lite
-              icon="expand-less"
-              @click=${this.upbtn}
-            ></simple-icon-lite>
+          <button class="up" @click=${this.upbtn}>
+            <simple-icon-lite icon="expand-less"></simple-icon-lite>
           </button>
         </div>
       </div>
