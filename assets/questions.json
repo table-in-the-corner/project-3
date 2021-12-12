@@ -1,0 +1,17 @@
+{
+	"questions": [{
+		"questionNumber": 1,
+		"question": "What is the best button?",
+		"answers": [
+			"table-in-the-corner",
+			"viable-slime",
+			"PenStat",
+			"3b4b",
+			"TheKodingKrab"
+		]
+	}, {
+		"questionNumber": 2,
+		"question": "Best food?",
+		"answers": ["Pizza", "Salad", "Candy", "Waffles", "Peanut Butter"]
+	}]
+}

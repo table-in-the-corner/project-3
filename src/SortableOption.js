@@ -136,7 +136,8 @@ export class SortableOption extends LitElement {
       }
       // if (this.dragPosition < 0){
       // console.log(this.offsetTop - this.position)
-      if (this.offsetTop - this.position > 0) {
+      // console.log(this.offsetTop - this.position)
+      if (this.offsetTop - this.position > 165) {
         // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
         // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
         this.parentElement.insertBefore(
@@ -146,7 +147,7 @@ export class SortableOption extends LitElement {
       }
       // }
       // if (this.dragPosition > 0){
-      if (this.offsetTop - this.position < -80) {
+      if (this.offsetTop - this.position < 100) {
         this.parentElement.insertBefore(
           this,
           this.parentElement.children[currentIndex + 1].nextElementSibling

@@ -12,6 +12,7 @@ export class SortableFrame extends LitElement {
   constructor() {
     super();
     this.need = 'abc';
+    this.dataSource = '../assets/questions.json';
     this.questions = [
       {
         questionNumber: 1,
@@ -162,6 +163,9 @@ export class SortableFrame extends LitElement {
         .children[index].removeAttribute('incorrect');
       this.shadowRoot
         .querySelector('#options')
+        .children[index].removeAttribute('correct');
+      this.shadowRoot
+        .querySelector('#options')
         .children[index].shadowRoot.querySelector('.option')
         .setAttribute('draggable', false);
     }
@@ -197,6 +201,11 @@ export class SortableFrame extends LitElement {
             .querySelector('#options')
             .children[index].setAttributeNode(incorrect);
           // console.log(this.shadowRoot.querySelector('#options').children[index])
+        } else {
+          const correct = document.createAttribute('correct');
+          this.shadowRoot
+            .querySelector('#options')
+            .children[index].setAttributeNode(correct);
         }
       }
       // this.shadowRoot.querySelector('#options').children[index]
@@ -258,6 +267,34 @@ export class SortableFrame extends LitElement {
       this.shadowRoot
         .querySelector('#options')
         .children[index].removeAttribute('incorrect');
+      this.shadowRoot
+        .querySelector('#options')
+        .children[index].removeAttribute('correct');
+    }
+    document
+      .querySelector('sortable-frame')
+      .shadowRoot.querySelector('.frame')
+      .querySelector('#options')
+      .querySelectorAll('sortable-option')[0]
+      .shadowRoot.querySelector('.up').disabled = true;
+    if (
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        [this.parentElement.children.length - 1].shadowRoot.querySelector(
+          '.down'
+        )
+    ) {
+      document
+        .querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        [this.parentElement.children.length - 1].shadowRoot.querySelector(
+          '.down'
+        ).disabled = true;
     }
   }
 
@@ -289,12 +326,34 @@ export class SortableFrame extends LitElement {
     }
   }
 
+  // async loadJSONData() {
+  //   await fetch(this.dataSource, {
+  //     method: this.method,
+  //   })
+  //     .then((response) => {
+  //       if (response.ok) return response.text();
+  //     })
+  //     .then((text) => {
+  //       console.log(text)
+  //       //this.tableData = text;
+  //       //this.handleResponse();
+  //     });
+  // }
+
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
   // this is a sign it is safe to make calls to this.shadowRoot
   firstUpdated(changedProperties) {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
+    changedProperties.forEach((oldValue, propName) => {
+      if (this.dataSource === propName) {
+        setTimeout(() => {
+          this.loadJSONData();
+        }, 2000);
+      }
+    });
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
@@ -410,6 +469,14 @@ export class SortableFrame extends LitElement {
       }
       sortable-option[incorrect]:nth-child(n) {
         background-color: red;
+      }
+      sortable-option[correct] {
+        border-width: 2px;
+        border-color: green;
+        border-style: solid;
+      }
+      sortable-option[correct]:nth-child(n) {
+        background-color: green;
       }
       .questionContainer {
         display: flex;

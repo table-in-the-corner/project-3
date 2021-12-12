@@ -17,6 +17,12 @@
           "title": "Question",
           "description": "What question are you posing?",
           "inputMethod": "textfield"
+        },
+        {
+          "property": "src",
+          "title": "Source",
+          "description": "Select your JSON file of questions:",
+          "inputMethod": "haxupload"
         }
       ],
       "advanced": [
@@ -27,7 +33,8 @@
         "tag": "sortable-frame",
         "properties": {
             "question": "1",
-            "activequestion": "Sample Question?"
+            "activequestion": "Sample Question?",
+            "src": "../assets/questions.json"
         },
         "content": "<sortable-option choice='test'></sortable-option>"
       }
