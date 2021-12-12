@@ -125,7 +125,10 @@ export class SortableOption extends LitElement {
       this.position = pos;
     }
 
-    // console.log(this.offsetTop - this.position)
+    // if (window.innerHeight - this.parentElement.clientHeight < 300){
+    //   document.documentElement.scrollTop = 90
+    // }
+
     for (
       let index = 0;
       index < this.parentElement.children.length;
@@ -134,25 +137,46 @@ export class SortableOption extends LitElement {
       if (this === this.parentElement.children[index]) {
         currentIndex = index;
       }
-      // if (this.dragPosition < 0){
-      // console.log(this.offsetTop - this.position)
-      // console.log(this.offsetTop - this.position)
-      if (this.offsetTop - this.position > 165) {
-        // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
-        // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
-        this.parentElement.insertBefore(
-          this,
-          this.parentElement.children[currentIndex]
-        );
+
+      if (window.innerHeight - this.parentElement.clientHeight < 300) {
+        if (this.offsetTop - this.position > 0) {
+          // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+          // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+          this.parentElement.insertBefore(
+            this,
+            this.parentElement.children[currentIndex]
+          );
+        }
+        // }
+        // if (this.dragPosition > 0){
+        if (this.offsetTop - this.position < 40) {
+          this.parentElement.insertBefore(
+            this,
+            this.parentElement.children[currentIndex + 1].nextElementSibling
+          );
+        }
+      } else {
+        // if (this.dragPosition < 0){
+        // console.log(this.offsetTop - this.position)
+        // console.log(this.offsetTop - this.position)
+        if (this.offsetTop - this.position > 40) {
+          // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+          // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+          this.parentElement.insertBefore(
+            this,
+            this.parentElement.children[currentIndex]
+          );
+        }
+        // }
+        // if (this.dragPosition > 0){
+        if (this.offsetTop - this.position < -60) {
+          this.parentElement.insertBefore(
+            this,
+            this.parentElement.children[currentIndex + 1].nextElementSibling
+          );
+        }
       }
-      // }
-      // if (this.dragPosition > 0){
-      if (this.offsetTop - this.position < 100) {
-        this.parentElement.insertBefore(
-          this,
-          this.parentElement.children[currentIndex + 1].nextElementSibling
-        );
-      }
+
       this.disable();
       // }
     }

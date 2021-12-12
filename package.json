@@ -1,12 +1,12 @@
 {
-  "name": "@lrnwebcomponents/rename-me",
-  "description": "HAX Capable web component to build a better future",
+  "name": "@table-in-the-corner/project-3",
+  "description": "A sorting game web component",
   "license": "Apache-2.0",
-  "author": "btopro",
+  "author": "table-in-the-corner",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/elmsln/project-3.git"
+    "url": "https://github.com/table-in-the-corner/project-3.git"
   },
   "scripts": {
     "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
