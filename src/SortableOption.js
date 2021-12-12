@@ -173,60 +173,11 @@ export class SortableOption extends LitElement {
             but.disabled = false;
           });
         });
-
       this.parentNode.insertBefore(this, before);
-
       this.disable();
-      // document
-      //   .querySelector('sortable-frame')
-      //   .shadowRoot.querySelector('.frame')
-      //   .querySelector('#options')
-      //   .querySelectorAll('sortable-option')[0]
-      //   .shadowRoot.querySelector('.up').disabled = true;
-      // document
-      //   .querySelector('sortable-frame')
-      //   .shadowRoot.querySelector('.frame')
-      //   .querySelector('#options')
-      //   .querySelectorAll('sortable-option')
-      //   [this.parentElement.children.length - 1].shadowRoot.querySelector(
-      //     '.down'
-      //   ).disabled = true;
     }
   }
-  // checkbtns() {
 
-  //   // if (this.previousElementSibling == null) {
-  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
-  //   // }
-  //   // if (this.nextElementSibling == null) {
-  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
-  //   // }
-  //   for (var index = 0; index < this.parentElement.children.length; index++) {
-  //     this.shadowRoot.querySelector(".option").querySelector(".up").disabled = false;
-  //     this.shadowRoot.querySelector(".option").querySelector(".down").disabled = false;
-
-  //   }
-  //   // this.shadowRoot.children[0].querySelector(".option").querySelector(".up").disabled = true;
-  //   // this.parentElement.children[4].querySelector(".option").querySelector(".up").disabled = true;
-  //   // if (this.previousElementSibling == null) {
-
-  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
-  //   // }
-  //   // if (this.nextElementSibling == null) {
-  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
-  //   // }
-  //   // //     this.parentElement.children.index[index].querySelector(".option").querySelector(".up").disabled = false;
-  //   //     this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
-  //   // }
-  //   // if(this === this.parentElement.children[0]){
-  //   //   //console.log("this should be disabled");
-  //   //   this.shadowRoot.querySelector(".option").querySelector(".up").disabled = true;
-  //   // }
-  //   // if(this === this.parentElement.children[4]){
-
-  //   //   this.shadowRoot.querySelector(".option").querySelector(".down").disabled = true;
-  //   // }
-  // }
   disable() {
     document
       .querySelector('sortable-frame')
@@ -270,23 +221,8 @@ export class SortableOption extends LitElement {
             but.disabled = false;
           });
         });
-
       this.parentNode.insertBefore(after, this);
       this.disable();
-      // document
-      //   .querySelector('sortable-frame')
-      //   .shadowRoot.querySelector('.frame')
-      //   .querySelector('#options')
-      //   .querySelectorAll('sortable-option')
-      //   [this.parentElement.children.length - 1].shadowRoot.querySelector(
-      //     '.down'
-      //   ).disabled = true;
-      // document
-      //   .querySelector('sortable-frame')
-      //   .shadowRoot.querySelector('.frame')
-      //   .querySelector('#options')
-      //   .querySelectorAll('sortable-option')[0]
-      //   .shadowRoot.querySelector('.up').disabled = true;
     }
   }
 
