@@ -76,6 +76,22 @@ export class SortableFrame extends LitElement {
       .querySelector('.statsContainer')
       .querySelector('select');
     this.questions.forEach(question => {
+      // if(this.shadowRoot
+      //   .querySelector('.statsContainer')
+      //   .querySelector('select')
+      //   .options.length === 0){
+      if (
+        this.shadowRoot.querySelector('.statsContainer').querySelector('select')
+          .options.length !== this.questions.length
+      )
+        this.shadowRoot
+          .querySelector('.statsContainer')
+          .querySelector('select')
+          .options.add(
+            new Option(question.questionNumber, question.questionNumber)
+          );
+      // }
+
       // https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript?rq=1
       // if (selectedQuest.options[selectedQuest.selectedIndex] === undefined){
       //   console.log(question)
@@ -87,11 +103,51 @@ export class SortableFrame extends LitElement {
       //   });
       //   //return
       // }
+      // if(this.shadowRoot.querySelector('.statsContainer').querySelector('select').options[question.questionNumber] === 1){
+
+      // }
+
+      // if(this.shadowRoot.querySelector('.frame').querySelector("#options").children.length === 0){
+
+      //   this.activeQuestion = question.question;
+      //   this.questionNumber = question.questionNumber;
+      //   question.answers.forEach(answer => {
+      //     this.correctAnswers.push(answer);
+      //     this.randomized.push(answer);
+      //     this.currAnswers = [];
+      //   });
+
+      //   // Fisher-Yates (Knuth) Shuffle
+      //   // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+      //   let currentIndex = question.answers.length;
+      //   let randomIndex;
+      //   // While there remain elements to shuffle...
+      //   while (currentIndex !== 0) {
+      //     // Pick a remaining element...
+      //     randomIndex = Math.floor(Math.random() * currentIndex);
+      //     currentIndex -= 1;
+      //     // And swap it with the current element.
+      //     [this.randomized[currentIndex], this.randomized[randomIndex]] = [
+      //       this.randomized[randomIndex],
+      //       this.randomized[currentIndex],
+      //     ];
+      //   }
+      //   this.randomized.forEach(answer => {
+      //     const node = document.createElement('sortable-option');
+      //     node.setAttribute('choice', answer);
+      //     this.shadowRoot.querySelector('#options').appendChild(node);
+      //   });
+
+      //   return
+      // }
 
       if (
+        selectedQuest &&
+        selectedQuest.options &&
+        selectedQuest.options[selectedQuest.selectedIndex] &&
         // eslint-disable-next-line radix
         question.questionNumber ===
-        parseInt(selectedQuest.options[selectedQuest.selectedIndex].value, 10)
+          parseInt(selectedQuest.options[selectedQuest.selectedIndex].value, 10)
         // selectedQuest.options[selectedQuest.selectedIndex] === undefined
       ) {
         this.activeQuestion = question.question;
@@ -355,7 +411,7 @@ export class SortableFrame extends LitElement {
         if (response.ok) return response.text();
       })
       .then(text => {
-        this.questions = JSON.parse(text).questions;
+        this.questions = [...JSON.parse(text).questions];
       });
   }
 
@@ -365,66 +421,65 @@ export class SortableFrame extends LitElement {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
-    changedProperties.forEach((oldValue, propName) => {
+    changedProperties.forEach(async (oldValue, propName) => {
       if (propName === 'dataSource' && this[propName].endsWith('.json')) {
         // eslint-disable-next-line global-require
-        this.loadJSONData('../assets/questions.json');
+        await this.loadJSONData('../assets/questions.json');
 
-        if (this.questions[0].questionNumber === 1) {
-          this.activeQuestion = this.questions[0].question;
-          this.questionNumber = this.questions[0].questionNumber;
-          this.questions[0].answers.forEach(ans => {
-            this.correctAnswers.push(ans);
-            this.randomized.push(ans);
-            this.currAnswers = [];
-          });
+        this.shuffle();
+        // if (this.questions[0].questionNumber === 1) {
+        //   this.activeQuestion = this.questions[0].question;
+        //   this.questionNumber = this.questions[0].questionNumber;
+        //   this.questions[0].answers.forEach(ans => {
+        //     this.correctAnswers.push(ans);
+        //     this.randomized.push(ans);
+        //     this.currAnswers = [];
+        //   });
 
-          // Fisher-Yates (Knuth) Shuffle
-          // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-          let currentIndex = this.questions[0].answers.length;
-          let randomIndex;
-          // While there remain elements to shuffle...
-          while (currentIndex !== 0) {
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            // And swap it with the current element.
-            [this.randomized[currentIndex], this.randomized[randomIndex]] = [
-              this.randomized[randomIndex],
-              this.randomized[currentIndex],
-            ];
-          }
-          this.randomized.forEach(answer => {
-            const node = document.createElement('sortable-option');
-            node.setAttribute('choice', answer);
-            this.shadowRoot.querySelector('#options').appendChild(node);
-          });
-        }
+        //   // Fisher-Yates (Knuth) Shuffle
+        //   // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+        //   let currentIndex = this.questions[0].answers.length;
+        //   let randomIndex;
+        //   // While there remain elements to shuffle...
+        //   while (currentIndex !== 0) {
+        //     // Pick a remaining element...
+        //     randomIndex = Math.floor(Math.random() * currentIndex);
+        //     currentIndex -= 1;
+        //     // And swap it with the current element.
+        //     [this.randomized[currentIndex], this.randomized[randomIndex]] = [
+        //       this.randomized[randomIndex],
+        //       this.randomized[currentIndex],
+        //     ];
+        //   }
+        //   this.randomized.forEach(answer => {
+        //     const node = document.createElement('sortable-option');
+        //     node.setAttribute('choice', answer);
+        //     this.shadowRoot.querySelector('#options').appendChild(node);
+        //   });
+        // }
       }
     });
-    this.numberIncorrect = this.randomized.length;
+    // this.numberIncorrect = this.randomized.length;
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#reorder').disabled = true;
     // https://stackoverflow.com/questions/17730621/how-to-dynamically-add-options-to-an-existing-select-in-vanilla-javascript/17730724
-    if (
-      document
-        .querySelector('sortable-frame')
-        .shadowRoot.querySelector('.statsContainer')
-        .querySelector('select').length === 0
-    ) {
-      this.questions.forEach(qu => {
-        // document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('select').options.add(new Option(qu.questionNumber, qu.questionNumber))
-        this.shadowRoot
-          .querySelector('.statsContainer')
-          .querySelector('select')
-          .options.add(new Option(qu.questionNumber, qu.questionNumber));
-        // console.log(this.shadowRoot.querySelector('.statsContainer').querySelector('select').length)
-      });
-    }
-    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('select'))
-    // console.log(this.shadowRoot.querySelector('.statsContainer').querySelector('select'))
+    // if (
+    //   document
+    //     .querySelector('sortable-frame')
+    //     .shadowRoot.querySelector('.statsContainer')
+    //     .querySelector('select').length === 0
+    // ) {
+    //   this.questions.forEach(qu => {
+    //     // document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('select').options.add(new Option(qu.questionNumber, qu.questionNumber))
+    //     this.shadowRoot
+    //       .querySelector('.statsContainer')
+    //       .querySelector('select')
+    //       .options.add(new Option(qu.questionNumber, qu.questionNumber));
+    //      console.log(this.shadowRoot.querySelector('.statsContainer').querySelector('select').length)
+    //   });
+    // }
   }
 
   // HTMLElement life-cycle, element has been connected to the page / added or moved
