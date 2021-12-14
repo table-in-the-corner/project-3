@@ -50,5 +50,9 @@ describe('SortableOption',() =>{
       'choice'
     );
   });
-  
+
+  it('Choice', () => {
+    expect(element.choice).to.exist;
+    expect(element.subheader).to.equal('Option1');
+  });
 });
