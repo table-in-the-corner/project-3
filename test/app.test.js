@@ -27,10 +27,21 @@ describe('SortableFrame',() =>{
   beforeEach(async () =>{
     element = await fixture(html`<sortable-frame></sortable-frame>`);
   });
+
 });
 describe('SortableOption',() =>{
   let element;
   beforeEach(async () =>{
     element = await fixture(html`<sortable-option></sortable-option>`);
+  });
+  it('Contains a div slot', async () => {
+    expect(element.shadowRoot.querySelectorAll('div slot')[0].name).to.equal(
+      'options'
+    );
+  });
+  it('Check golden image link', () =>{
+    expect(element.shadowRoot.querySelector('img').src).to.equal(
+      'http://localhost:8000/assets/goldenretriever.jpeg'
+    );
   });
 });
