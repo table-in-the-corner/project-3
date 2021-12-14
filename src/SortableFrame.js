@@ -9,6 +9,14 @@ export class SortableFrame extends LitElement {
     return 'sortable-frame';
   }
 
+  // // eslint-disable-next-line class-methods-use-this
+  // haxHooks() {
+  //   return {
+  //     editModeChanged: "haxeditModeChanged",
+  //     activeElementChanged: "haxactiveElementChanged",
+  //   };
+  // }
+
   constructor() {
     super();
     this.need = 'abc';
@@ -50,6 +58,7 @@ export class SortableFrame extends LitElement {
       questionNumber: { type: String, reflect: true },
       activeQuestion: { type: String, reflect: true },
       numberIncorrect: { type: Number },
+      dataSource: { type: String, reflect: true },
     };
   }
 
@@ -68,11 +77,22 @@ export class SortableFrame extends LitElement {
       .querySelector('select');
     this.questions.forEach(question => {
       // https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript?rq=1
+      // if (selectedQuest.options[selectedQuest.selectedIndex] === undefined){
+      //   console.log(question)
+      //   // console.log(this.shadowRoot.querySelector('#options'))
+      //   this.randomized.forEach(answer => {
+      //     const node = document.createElement('sortable-option');
+      //     node.setAttribute('choice', answer);
+      //     this.shadowRoot.querySelector('#options').appendChild(node);
+      //   });
+      //   //return
+      // }
 
       if (
         // eslint-disable-next-line radix
         question.questionNumber ===
         parseInt(selectedQuest.options[selectedQuest.selectedIndex].value, 10)
+        // selectedQuest.options[selectedQuest.selectedIndex] === undefined
       ) {
         this.activeQuestion = question.question;
         this.questionNumber = question.questionNumber;
@@ -326,19 +346,18 @@ export class SortableFrame extends LitElement {
     }
   }
 
-  // async loadJSONData() {
-  //   await fetch(this.dataSource, {
-  //     method: this.method,
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) return response.text();
-  //     })
-  //     .then((text) => {
-  //       console.log(text)
-  //       //this.tableData = text;
-  //       //this.handleResponse();
-  //     });
-  // }
+  async loadJSONData(str) {
+    await fetch(str, {
+      method: this.method,
+    })
+      // eslint-disable-next-line consistent-return
+      .then(response => {
+        if (response.ok) return response.text();
+      })
+      .then(text => {
+        this.questions = JSON.parse(text).questions;
+      });
+  }
 
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
   // this is a sign it is safe to make calls to this.shadowRoot
@@ -347,29 +366,65 @@ export class SortableFrame extends LitElement {
       super.firstUpdated(changedProperties);
     }
     changedProperties.forEach((oldValue, propName) => {
-      if (this.dataSource === propName) {
-        setTimeout(() => {
-          this.loadJSONData();
-        }, 2000);
+      if (propName === 'dataSource' && this[propName].endsWith('.json')) {
+        // eslint-disable-next-line global-require
+        this.loadJSONData('../assets/questions.json');
+
+        if (this.questions[0].questionNumber === 1) {
+          this.activeQuestion = this.questions[0].question;
+          this.questionNumber = this.questions[0].questionNumber;
+          this.questions[0].answers.forEach(ans => {
+            this.correctAnswers.push(ans);
+            this.randomized.push(ans);
+            this.currAnswers = [];
+          });
+
+          // Fisher-Yates (Knuth) Shuffle
+          // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+          let currentIndex = this.questions[0].answers.length;
+          let randomIndex;
+          // While there remain elements to shuffle...
+          while (currentIndex !== 0) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            // And swap it with the current element.
+            [this.randomized[currentIndex], this.randomized[randomIndex]] = [
+              this.randomized[randomIndex],
+              this.randomized[currentIndex],
+            ];
+          }
+          this.randomized.forEach(answer => {
+            const node = document.createElement('sortable-option');
+            node.setAttribute('choice', answer);
+            this.shadowRoot.querySelector('#options').appendChild(node);
+          });
+        }
       }
     });
-
+    this.numberIncorrect = this.randomized.length;
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#reorder').disabled = true;
     // https://stackoverflow.com/questions/17730621/how-to-dynamically-add-options-to-an-existing-select-in-vanilla-javascript/17730724
-    this.questions.forEach(question => {
+    if (
       document
         .querySelector('sortable-frame')
         .shadowRoot.querySelector('.statsContainer')
-        .querySelector('select')
-        .options.add(
-          new Option(question.questionNumber, question.questionNumber)
-        );
-    });
-    // document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('select').selectedIndex = 0
-    this.shuffle();
+        .querySelector('select').length === 0
+    ) {
+      this.questions.forEach(qu => {
+        // document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('select').options.add(new Option(qu.questionNumber, qu.questionNumber))
+        this.shadowRoot
+          .querySelector('.statsContainer')
+          .querySelector('select')
+          .options.add(new Option(qu.questionNumber, qu.questionNumber));
+        // console.log(this.shadowRoot.querySelector('.statsContainer').querySelector('select').length)
+      });
+    }
+    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('select'))
+    // console.log(this.shadowRoot.querySelector('.statsContainer').querySelector('select'))
   }
 
   // HTMLElement life-cycle, element has been connected to the page / added or moved
@@ -387,47 +442,6 @@ export class SortableFrame extends LitElement {
   // https://stackoverflow.com/questions/53986159/drag-and-drop-how-to-get-the-actual-html-in-dragstart-event-and-drop-event
   // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
   // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/getData
-  // /* eslint-disable class-methods-use-this */
-  // dragStartHandler(event) {
-  //   event.dataTransfer.setData('text/html', event.target.outerHTML);
-  // }
-
-  // dragHandler(event) {
-  //   event.dataTransfer.setData('text/html', event.target.id);
-  // }
-
-  // dropAllower(event) {
-  //   event.preventDefault();
-  // }
-
-  // dropHandler(event) {
-  //   event.preventDefault();
-  //   let data = event.dataTransfer.getData('text/html');
-  //   const temp = new DOMParser().parseFromString(data, 'text/html');
-  //   this.shadowRoot.querySelectorAll('sortable-option').forEach(el => {
-  //     if (!temp.body.firstChild) {
-  //       return;
-  //     }
-  //     console.log(temp.body.firstChild);
-  //     if (el.id === temp.body.firstChild.id) {
-  //       const node = el.nextElementSibling;
-  //       const nodeId = temp.body.firstChild.id;
-  //       event.target.replaceWith(temp.body.firstChild);
-  //       el.nextElementSibling.remove();
-  //       el.remove();
-  //       this.shadowRoot
-  //         .querySelector(`#${nodeId}`)
-  //         .previousElementSibling.insertAdjacentElement(
-  //           'afterend',
-  //           event.target
-  //         );
-  //       this.shadowRoot.querySelector(`#${nodeId}`).parentElement.append(node);
-  //       data = '';
-  //     }
-  //     // continue
-  //   });
-  // }
-  // /* eslint-enable class-methods-use-this */
 
   // CSS - specific to Lit
   static get styles() {

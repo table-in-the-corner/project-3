@@ -56,14 +56,14 @@
   </ul>
   <div class="hax-wrapper">
     <h-a-x app-store='{"url": "assets/appstore.json"}' element-align="right">
-      <p data-hax-grid="" role="textbox">Stuff and thigns</p>
-      <p data-hax-grid="" role="textbox">Another block of text below that</p>
+      <!-- <p data-hax-grid="" role="textbox">Stuff and thigns</p>
+      <p data-hax-grid="" role="textbox">Another block of text below that</p> -->
 
-      <sortable-frame question="1">
+      <sortable-frame question="1" dataSource="..assets/questions.json">
         <slot name="options"></slot>
       </sortable-frame>
 
-      <grid-plate data-hax-grid="" layout="1-1-1" responsive-size="sm" role="textbox" breakpoint-sm="900" breakpoint-md="1200" breakpoint-lg="1500" breakpoint-xl="1800" disable-responsive="">
+      <!-- <grid-plate data-hax-grid="" layout="1-1-1" responsive-size="sm" role="textbox" breakpoint-sm="900" breakpoint-md="1200" breakpoint-lg="1500" breakpoint-xl="1800" disable-responsive="">
         
         <retro-card role="textbox" title="hax" url="https://haxtheweb.org/" subtitle="The future of content authoring" tags="bright, amazing, innovative, new, fun, a requirement to complete this course" slot="col-1" accent-color="indigo" dark=""></retro-card>
       
@@ -160,7 +160,7 @@
       </grid-plate>
       
       
-      <p data-hax-grid="">Cool stuff. Let's write about spongebob!</p>
+      <p data-hax-grid="">Cool stuff. Let's write about spongebob!</p> -->
     </h-a-x>
   </div>
 </body>

@@ -19,10 +19,11 @@
           "inputMethod": "textfield"
         },
         {
-          "property": "src",
+          "property": "dataSource",
           "title": "Source",
           "description": "Select your JSON file of questions:",
-          "inputMethod": "haxupload"
+          "inputMethod": "fileupload",
+          "validationType": "url"
         }
       ],
       "advanced": [
