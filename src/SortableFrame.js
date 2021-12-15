@@ -121,6 +121,7 @@ export class SortableFrame extends LitElement {
           .querySelector('.statsContainer')
           .querySelector('#reorder').disabled = true;
         if (document.querySelector('body').querySelector('h-a-x')) {
+          // https://stackoverflow.com/questions/54610139/shadowroot-property-is-null-despite-open
           customElements.whenDefined('sortable-frame').then(() => {
             document
               .querySelector('body')
