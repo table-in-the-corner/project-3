@@ -41,7 +41,6 @@ export class SortableFrame extends LitElement {
     this.currAnswers = [];
     this.questionNumber = 1;
     this.activeQuestion = '';
-    // this.activeQuestion = this.questions[0].question;
     this.numberIncorrect = 0;
   }
 
@@ -50,6 +49,7 @@ export class SortableFrame extends LitElement {
       questionNumber: { type: String, reflect: true },
       activeQuestion: { type: String, reflect: true },
       numberIncorrect: { type: Number },
+      dataSource: { type: String, reflect: true },
     };
   }
 
@@ -67,12 +67,26 @@ export class SortableFrame extends LitElement {
       .querySelector('.statsContainer')
       .querySelector('select');
     this.questions.forEach(question => {
+      if (
+        this.shadowRoot.querySelector('.statsContainer').querySelector('select')
+          .options.length !== this.questions.length
+      )
+        this.shadowRoot
+          .querySelector('.statsContainer')
+          .querySelector('select')
+          .options.add(
+            new Option(question.questionNumber, question.questionNumber)
+          );
+
       // https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript?rq=1
 
       if (
+        selectedQuest &&
+        selectedQuest.options &&
+        selectedQuest.options[selectedQuest.selectedIndex] &&
         // eslint-disable-next-line radix
         question.questionNumber ===
-        parseInt(selectedQuest.options[selectedQuest.selectedIndex].value, 10)
+          parseInt(selectedQuest.options[selectedQuest.selectedIndex].value, 10)
       ) {
         this.activeQuestion = question.question;
         this.questionNumber = question.questionNumber;
@@ -102,19 +116,59 @@ export class SortableFrame extends LitElement {
           node.setAttribute('choice', answer);
           this.shadowRoot.querySelector('#options').appendChild(node);
         });
-        // console.log(this.shadowRoot.querySelector('#options').childNodes[0])
+        this.shadowRoot
+          .querySelector('.frame')
+          .querySelector('.statsContainer')
+          .querySelector('#reorder').disabled = true;
+        if (document.querySelector('body').querySelector('h-a-x')) {
+          // https://stackoverflow.com/questions/54610139/shadowroot-property-is-null-despite-open
+          customElements.whenDefined('sortable-frame').then(() => {
+            document
+              .querySelector('body')
+              .querySelector('h-a-x')
+              .shadowRoot.querySelector('sortable-frame')
+              .shadowRoot.querySelector('.frame')
+              .querySelector('#options')
+              .querySelectorAll('sortable-option')[0]
+              .shadowRoot.querySelector('.up').disabled = true;
+            if (
+              document
+                .querySelector('body')
+                .querySelector('h-a-x')
+                .shadowRoot.querySelector('sortable-frame')
+                .shadowRoot.querySelector('.frame')
+                .querySelector('#options')
+                .querySelectorAll('sortable-option')
+                [
+                  document
+                    .querySelector('body')
+                    .querySelector('h-a-x')
+                    .shadowRoot.querySelector('sortable-frame')
+                    .shadowRoot.querySelector('.frame')
+                    .querySelector('#options').children.length - 1
+                ].shadowRoot.querySelector('.down')
+            ) {
+              document
+                .querySelector('body')
+                .querySelector('h-a-x')
+                .shadowRoot.querySelector('sortable-frame')
+                .shadowRoot.querySelector('.frame')
+                .querySelector('#options')
+                .querySelectorAll('sortable-option')
+                [
+                  document
+                    .querySelector('body')
+                    .querySelector('h-a-x')
+                    .shadowRoot.querySelector('sortable-frame')
+                    .shadowRoot.querySelector('.frame')
+                    .querySelector('#options').children.length - 1
+                ].shadowRoot.querySelector('.down').disabled = true;
+            }
+          });
+        }
       }
     });
     this.numberIncorrect = this.randomized.length;
-    // document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option').forEach(option => {
-    //   option.shadowRoot.querySelectorAll('button').forEach(but => {
-    //     // eslint-disable-next-line no-param-reassign
-    //     console.log(but)
-    //   })
-    // })
-    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option')[0])
-    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option').querySelector('.up'))
-    // document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option')[0].shadowRoot.querySelector('.up').disabled = true
   }
 
   check() {
@@ -122,10 +176,28 @@ export class SortableFrame extends LitElement {
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#check').disabled = true;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.statsContainer')
+        .querySelector('#check').disabled = true;
+    }
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#reorder').disabled = false;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.statsContainer')
+        .querySelector('#reorder').disabled = false;
+    }
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.frame')
@@ -142,12 +214,31 @@ export class SortableFrame extends LitElement {
         });
         // console.log(option.shadowRoot.querySelectorAll('button'))
       });
-    // console.log(document.querySelector('sortable-frame').shadowRoot.querySelector('.frame').querySelector("#options").querySelectorAll('sortable-option'))
+
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        .forEach(option => {
+          option.shadowRoot.querySelectorAll('button').forEach(but => {
+            // eslint-disable-next-line no-param-reassign
+            but.disabled = true;
+          });
+          option.shadowRoot.querySelectorAll('button').forEach(simpleIcon => {
+            // eslint-disable-next-line no-param-reassign
+            simpleIcon.disabled = true;
+          });
+        });
+    }
+
     // const currAnswers = [];
     const incorrectAnswers = [];
     this.currAnswers = [];
-    // console.log("Random " + this.randomized);
-    // console.log("Correct " + this.correctAnswers)
+
     for (
       let index = 0;
       index < this.shadowRoot.querySelector('#options').children.length;
@@ -169,7 +260,7 @@ export class SortableFrame extends LitElement {
         .children[index].shadowRoot.querySelector('.option')
         .setAttribute('draggable', false);
     }
-    // console.log(currAnswers)
+
     for (let i = 0; i < this.currAnswers.length; i += 1) {
       for (let j = 0; j < this.correctAnswers.length; j += 1) {
         if (this.currAnswers[i] === this.correctAnswers[i]) {
@@ -208,11 +299,7 @@ export class SortableFrame extends LitElement {
             .children[index].setAttributeNode(correct);
         }
       }
-      // this.shadowRoot.querySelector('#options').children[index]
     }
-    // console.log(incorrectAnswers)
-    // console.log(this.numberIncorrect)
-    // if(this.numberIncorrect)
 
     // All answers correct!
     if (this.numberIncorrect === 0) {
@@ -232,6 +319,29 @@ export class SortableFrame extends LitElement {
             .shadowRoot.querySelector('.statsContainer')
             .querySelector('#reorder').disabled = true;
         });
+
+      if (document.querySelector('body').querySelector('h-a-x')) {
+        document
+          .querySelector('body')
+          .querySelector('h-a-x')
+          .shadowRoot.querySelector('sortable-frame')
+          .shadowRoot.querySelector('.frame')
+          .querySelector('#options')
+          .querySelectorAll('sortable-option')
+          .forEach(option => {
+            /* eslint-disable no-param-reassign */
+            option.shadowRoot.querySelector('.option').style.backgroundColor =
+              'green';
+            option.shadowRoot.querySelector('slot').style.color = 'black';
+            /* eslint-enable no-param-reassign */
+            document
+              .querySelector('body')
+              .querySelector('h-a-x')
+              .shadowRoot.querySelector('sortable-frame')
+              .shadowRoot.querySelector('.statsContainer')
+              .querySelector('#reorder').disabled = true;
+          });
+      }
     }
   }
 
@@ -240,10 +350,28 @@ export class SortableFrame extends LitElement {
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#reorder').disabled = true;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.statsContainer')
+        .querySelector('#reorder').disabled = true;
+    }
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#check').disabled = false;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.statsContainer')
+        .querySelector('#check').disabled = false;
+    }
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.frame')
@@ -255,6 +383,27 @@ export class SortableFrame extends LitElement {
           but.disabled = false;
         });
       });
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        .forEach(option => {
+          option.shadowRoot.querySelectorAll('button').forEach(but => {
+            // eslint-disable-next-line no-param-reassign
+            but.disabled = false;
+          });
+          option.shadowRoot.querySelectorAll('button').forEach(simpleIcon => {
+            // eslint-disable-next-line no-param-reassign
+            simpleIcon.disabled = false;
+          });
+          // console.log(option.shadowRoot.querySelectorAll('button'))
+        });
+    }
+
     for (
       let index = 0;
       index < this.shadowRoot.querySelector('#options').children.length;
@@ -277,6 +426,17 @@ export class SortableFrame extends LitElement {
       .querySelector('#options')
       .querySelectorAll('sortable-option')[0]
       .shadowRoot.querySelector('.up').disabled = true;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')[0]
+        .shadowRoot.querySelector('.up').disabled = true;
+    }
+
     if (
       document
         .querySelector('sortable-frame')
@@ -295,6 +455,24 @@ export class SortableFrame extends LitElement {
         [this.parentElement.children.length - 1].shadowRoot.querySelector(
           '.down'
         ).disabled = true;
+
+      if (document.querySelector('body').querySelector('h-a-x')) {
+        document
+          .querySelector('body')
+          .querySelector('h-a-x')
+          .shadowRoot.querySelector('sortable-frame')
+          .shadowRoot.querySelector('.frame')
+          .querySelector('#options')
+          .querySelectorAll('sortable-option')
+          [
+            document
+              .querySelector('body')
+              .querySelector('h-a-x')
+              .shadowRoot.querySelector('sortable-frame')
+              .shadowRoot.querySelector('.frame')
+              .querySelector('#options').children.length - 1
+          ].shadowRoot.querySelector('.down').disabled = true;
+      }
     }
   }
 
@@ -304,10 +482,28 @@ export class SortableFrame extends LitElement {
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#reorder').disabled = true;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.statsContainer')
+        .querySelector('#reorder').disabled = true;
+    }
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#check').disabled = false;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.statsContainer')
+        .querySelector('#check').disabled = false;
+    }
+
     for (
       let index = 0;
       index < this.shadowRoot.querySelector('#options').children.length;
@@ -326,19 +522,18 @@ export class SortableFrame extends LitElement {
     }
   }
 
-  // async loadJSONData() {
-  //   await fetch(this.dataSource, {
-  //     method: this.method,
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) return response.text();
-  //     })
-  //     .then((text) => {
-  //       console.log(text)
-  //       //this.tableData = text;
-  //       //this.handleResponse();
-  //     });
-  // }
+  async loadJSONData(str) {
+    await fetch(str, {
+      method: this.method,
+    })
+      // eslint-disable-next-line consistent-return
+      .then(response => {
+        if (response.ok) return response.text();
+      })
+      .then(text => {
+        this.questions = [...JSON.parse(text).questions];
+      });
+  }
 
   // Lit life-cycle; this fires the 1st time the element is rendered on the screen
   // this is a sign it is safe to make calls to this.shadowRoot
@@ -346,30 +541,20 @@ export class SortableFrame extends LitElement {
     if (super.firstUpdated) {
       super.firstUpdated(changedProperties);
     }
-    changedProperties.forEach((oldValue, propName) => {
-      if (this.dataSource === propName) {
-        setTimeout(() => {
-          this.loadJSONData();
-        }, 2000);
+    changedProperties.forEach(async (oldValue, propName) => {
+      if (propName === 'dataSource' && this[propName].endsWith('.json')) {
+        // eslint-disable-next-line global-require
+        await this.loadJSONData('../assets/questions.json');
+
+        this.shuffle();
       }
     });
-
+    // this.numberIncorrect = this.randomized.length;
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.statsContainer')
       .querySelector('#reorder').disabled = true;
     // https://stackoverflow.com/questions/17730621/how-to-dynamically-add-options-to-an-existing-select-in-vanilla-javascript/17730724
-    this.questions.forEach(question => {
-      document
-        .querySelector('sortable-frame')
-        .shadowRoot.querySelector('.statsContainer')
-        .querySelector('select')
-        .options.add(
-          new Option(question.questionNumber, question.questionNumber)
-        );
-    });
-    // document.querySelector('sortable-frame').shadowRoot.querySelector('.statsContainer').querySelector('select').selectedIndex = 0
-    this.shuffle();
   }
 
   // HTMLElement life-cycle, element has been connected to the page / added or moved
@@ -387,47 +572,6 @@ export class SortableFrame extends LitElement {
   // https://stackoverflow.com/questions/53986159/drag-and-drop-how-to-get-the-actual-html-in-dragstart-event-and-drop-event
   // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setData
   // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/getData
-  // /* eslint-disable class-methods-use-this */
-  // dragStartHandler(event) {
-  //   event.dataTransfer.setData('text/html', event.target.outerHTML);
-  // }
-
-  // dragHandler(event) {
-  //   event.dataTransfer.setData('text/html', event.target.id);
-  // }
-
-  // dropAllower(event) {
-  //   event.preventDefault();
-  // }
-
-  // dropHandler(event) {
-  //   event.preventDefault();
-  //   let data = event.dataTransfer.getData('text/html');
-  //   const temp = new DOMParser().parseFromString(data, 'text/html');
-  //   this.shadowRoot.querySelectorAll('sortable-option').forEach(el => {
-  //     if (!temp.body.firstChild) {
-  //       return;
-  //     }
-  //     console.log(temp.body.firstChild);
-  //     if (el.id === temp.body.firstChild.id) {
-  //       const node = el.nextElementSibling;
-  //       const nodeId = temp.body.firstChild.id;
-  //       event.target.replaceWith(temp.body.firstChild);
-  //       el.nextElementSibling.remove();
-  //       el.remove();
-  //       this.shadowRoot
-  //         .querySelector(`#${nodeId}`)
-  //         .previousElementSibling.insertAdjacentElement(
-  //           'afterend',
-  //           event.target
-  //         );
-  //       this.shadowRoot.querySelector(`#${nodeId}`).parentElement.append(node);
-  //       data = '';
-  //     }
-  //     // continue
-  //   });
-  // }
-  // /* eslint-enable class-methods-use-this */
 
   // CSS - specific to Lit
   static get styles() {

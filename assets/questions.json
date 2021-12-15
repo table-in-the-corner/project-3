@@ -13,5 +13,10 @@
 		"questionNumber": 2,
 		"question": "Best food?",
 		"answers": ["Pizza", "Salad", "Candy", "Waffles", "Peanut Butter"]
+	},
+	{
+		"questionNumber": 3,
+		"question": "Cutest squirrel?",
+		"answers": ["https://cdn.pixabay.com/photo/2014/12/17/00/28/red-squirrel-570936__340.jpg", "https://cdn.pixabay.com/photo/2019/09/10/16/42/squirrel-4466632__340.jpg", "https://cdn.pixabay.com/photo/2020/05/11/15/14/squirrel-5158715__340.jpg", "https://cdn.pixabay.com/photo/2018/10/31/22/42/squirrel-3786845__340.jpg"]
 	}]
 }
