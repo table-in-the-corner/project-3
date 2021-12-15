@@ -2,7 +2,7 @@
     "canScale": true,
     "canPosition": false,
     "canEditSource": true,
-    "contentEditable": true,
+    "contentEditable": false,
     "gizmo": {
       "title": "Sortable Frame",
       "description": "An ordering game",

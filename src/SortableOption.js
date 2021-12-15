@@ -13,6 +13,7 @@ export class SortableOption extends LitElement {
     this.addEventListener('drag', this.drag);
     this.position = 0;
     this.dragPosition = 0;
+    this.startPos = 0;
     // this.addEventListener('mou')
   }
 
@@ -61,35 +62,12 @@ export class SortableOption extends LitElement {
   // this allows you to react to variables changing and use javascript to perform logic
   updated(changedProperties) {
     changedProperties.forEach((oldValue, propName) => {
-      if (
-        propName === 'choice' &&
-        this[propName] === 'http://localhost:8000/assets/goldenretriever.jpeg'
-      ) {
+      if (propName === 'choice' && this[propName].startsWith('http')) {
         const node = document.createElement('img');
         node.setAttribute('alt', '');
         node.setAttribute('src', this[propName]);
-        node.style.width = '50px';
-        this.shadowRoot.querySelector('slot').appendChild(node);
-        // console.log(this.shadowRoot.querySelector('slot'))
-      }
-      if (
-        propName === 'choice' &&
-        this[propName] === 'http://localhost:8000/assets/husky.jpeg'
-      ) {
-        const node = document.createElement('img');
-        node.setAttribute('alt', '');
-        node.setAttribute('src', this[propName]);
-        node.style.width = '50px';
-        this.shadowRoot.querySelector('slot').appendChild(node);
-      }
-      if (
-        propName === 'choice' &&
-        this[propName] === 'http://localhost:8000/assets/memedog.jpeg'
-      ) {
-        const node = document.createElement('img');
-        node.setAttribute('alt', '');
-        node.setAttribute('src', this[propName]);
-        node.style.width = '50px';
+        node.style.width = '100px';
+        this.shadowRoot.querySelector('slot').innerText = '';
         this.shadowRoot.querySelector('slot').appendChild(node);
       }
     });
@@ -111,7 +89,6 @@ export class SortableOption extends LitElement {
     const pos = window.event;
     const posY = pos.clientY;
     this.position = posY;
-    // console.log(this.position)
   }
 
   // The Mouse position, drag position, and offSetTop logic was taken nearly directly from Sean's SlimeSorting Implementation
@@ -120,14 +97,9 @@ export class SortableOption extends LitElement {
     const pos = ev.clientY;
     let currentIndex = 0;
     this.dragPosition = this.position - this.offsetTop;
-    // console.log(this.offsetTop - this.position)
     if (pos !== 0) {
       this.position = pos;
     }
-
-    // if (window.innerHeight - this.parentElement.clientHeight < 300){
-    //   document.documentElement.scrollTop = 90
-    // }
 
     for (
       let index = 0;
@@ -137,43 +109,60 @@ export class SortableOption extends LitElement {
       if (this === this.parentElement.children[index]) {
         currentIndex = index;
       }
+      if (document.querySelector('body').querySelector('h-a-x')) {
+        // Dragging bounds source: https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element/42111623#42111623
+        if (this.offsetTop > -300) {
+          // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+          // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+          this.parentElement.insertBefore(
+            this,
+            this.parentElement.children[currentIndex]
+          );
+        }
+        // }
+        // if (this.dragPosition > 0){
+        if (this.offsetTop - this.position < -200) {
+          this.parentElement.insertBefore(
+            this,
+            this.parentElement.children[currentIndex + 1].nextElementSibling
+          );
+        }
+      }
 
-      if (window.innerHeight - this.parentElement.clientHeight < 300) {
-        if (this.offsetTop - this.position > 0) {
-          // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
-          // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
-          this.parentElement.insertBefore(
-            this,
-            this.parentElement.children[currentIndex]
-          );
-        }
-        // }
-        // if (this.dragPosition > 0){
-        if (this.offsetTop - this.position < 40) {
-          this.parentElement.insertBefore(
-            this,
-            this.parentElement.children[currentIndex + 1].nextElementSibling
-          );
-        }
-      } else {
-        // if (this.dragPosition < 0){
-        // console.log(this.offsetTop - this.position)
-        // console.log(this.offsetTop - this.position)
-        if (this.offsetTop - this.position > 40) {
-          // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
-          // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
-          this.parentElement.insertBefore(
-            this,
-            this.parentElement.children[currentIndex]
-          );
-        }
-        // }
-        // if (this.dragPosition > 0){
-        if (this.offsetTop - this.position < -60) {
-          this.parentElement.insertBefore(
-            this,
-            this.parentElement.children[currentIndex + 1].nextElementSibling
-          );
+      if (!document.querySelector('body').querySelector('h-a-x')) {
+        if (window.innerHeight - this.parentElement.clientHeight < 300) {
+          if (this.offsetTop - this.position > 0) {
+            // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+            // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+            this.parentElement.insertBefore(
+              this,
+              this.parentElement.children[currentIndex]
+            );
+          }
+          // }
+          // if (this.dragPosition > 0){
+          if (this.offsetTop - this.position < 40) {
+            this.parentElement.insertBefore(
+              this,
+              this.parentElement.children[currentIndex + 1].nextElementSibling
+            );
+          }
+        } else {
+          if (this.offsetTop - this.position > 40) {
+            // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+            // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+            this.parentElement.insertBefore(
+              this,
+              this.parentElement.children[currentIndex]
+            );
+          }
+
+          if (this.offsetTop - this.position < -60) {
+            this.parentElement.insertBefore(
+              this,
+              this.parentElement.children[currentIndex + 1].nextElementSibling
+            );
+          }
         }
       }
 
@@ -197,6 +186,23 @@ export class SortableOption extends LitElement {
             but.disabled = false;
           });
         });
+
+      if (document.querySelector('body').querySelector('h-a-x')) {
+        document
+          .querySelector('body')
+          .querySelector('h-a-x')
+          .shadowRoot.querySelector('sortable-frame')
+          .shadowRoot.querySelector('.frame')
+          .querySelector('#options')
+          .querySelectorAll('sortable-option')
+          .forEach(option => {
+            option.shadowRoot.querySelectorAll('button').forEach(but => {
+              // eslint-disable-next-line no-param-reassign
+              but.disabled = false;
+            });
+          });
+      }
+
       this.parentNode.insertBefore(this, before);
       this.disable();
     }
@@ -214,12 +220,39 @@ export class SortableOption extends LitElement {
           but.disabled = false;
         });
       });
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        .forEach(option => {
+          option.shadowRoot.querySelectorAll('button').forEach(but => {
+            // eslint-disable-next-line no-param-reassign
+            but.disabled = false;
+          });
+        });
+    }
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.frame')
       .querySelector('#options')
       .querySelectorAll('sortable-option')[0]
       .shadowRoot.querySelector('.up').disabled = true;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')[0]
+        .shadowRoot.querySelector('.up').disabled = true;
+    }
+
     document
       .querySelector('sortable-frame')
       .shadowRoot.querySelector('.frame')
@@ -228,6 +261,23 @@ export class SortableOption extends LitElement {
       [this.parentElement.children.length - 1].shadowRoot.querySelector(
         '.down'
       ).disabled = true;
+    if (document.querySelector('body').querySelector('h-a-x')) {
+      document
+        .querySelector('body')
+        .querySelector('h-a-x')
+        .shadowRoot.querySelector('sortable-frame')
+        .shadowRoot.querySelector('.frame')
+        .querySelector('#options')
+        .querySelectorAll('sortable-option')
+        [
+          document
+            .querySelector('body')
+            .querySelector('h-a-x')
+            .shadowRoot.querySelector('sortable-frame')
+            .shadowRoot.querySelector('.frame')
+            .querySelector('#options').children.length - 1
+        ].shadowRoot.querySelector('.down').disabled = true;
+    }
   }
 
   downbtn() {
@@ -245,6 +295,23 @@ export class SortableOption extends LitElement {
             but.disabled = false;
           });
         });
+
+      if (document.querySelector('body').querySelector('h-a-x')) {
+        document
+          .querySelector('body')
+          .querySelector('h-a-x')
+          .shadowRoot.querySelector('sortable-frame')
+          .shadowRoot.querySelector('.frame')
+          .querySelector('#options')
+          .querySelectorAll('sortable-option')
+          .forEach(option => {
+            option.shadowRoot.querySelectorAll('button').forEach(but => {
+              // eslint-disable-next-line no-param-reassign
+              but.disabled = false;
+            });
+          });
+      }
+
       this.parentNode.insertBefore(after, this);
       this.disable();
     }
