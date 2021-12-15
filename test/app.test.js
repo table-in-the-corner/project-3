@@ -1,58 +1,61 @@
 import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 
-import '../rename-me.js';
-import '../sortable-frame.js';
-import '../sortable-option.js';
+import '../sortable-options.js';
+import '../src/SortableFrame.js';
+import '../src/SortableOption.js';
 
-describe('RenameMe', () => {
+describe('SortableFrame', () => {
   let element;
   beforeEach(async () => {
-    element = await fixture(html`<rename-me></rename-me>`);
+    element = await fixture(html`<sortable-frame
+      activequestion="Hello"
+      question="1"
+      dataSource="..assets/questions.json"
+    >
+    </sortable-frame>`);
   });
-
-  it('renders a h1', () => {
-    const h1 = element.shadowRoot.querySelector('h1');
-    expect(h1).to.exist;
-    expect(h1.textContent).to.equal('cool');
-  });
-
-  it('passes the a11y audit', async () => {
-    await expect(element).shadowDom.to.be.accessible();
-  });
-});
-
-describe('SortableFrame',() =>{
-  let element;
-  beforeEach(async () =>{
-    element = await fixture(html`<sortable-frame></sortable-frame>`);
-  });
-  it('Check golden image link', () =>{
-    expect(element.shadowRoot.querySelector('img').src).to.equal(
-      'http://localhost:8000/assets/goldenretriever.jpeg'
+  it('Contains proper title', () => {
+    expect(element.shadowRoot.querySelector('h1').innerHTML).to.contain(
+      'Hello'
     );
   });
+  it('Check to be sure 5 options are listed', () => {
+    expect(
+      element.shadowRoot.querySelector('.statsContainer').querySelector('h1')
+        .innerHTML
+    ).to.contain('5');
+  });
   it('Contains a div slot', async () => {
-    expect(element.shadowRoot.querySelectorAll('div slot')[0].name).to.equal(
+    expect(element.shadowRoot.querySelectorAll('div')[2].id).to.equal(
       'options'
     );
   });
 });
 
-describe('SortableOption',() =>{
-  let element;
-  beforeEach(async () =>{
-    element = await fixture(html`<sortable-option></sortable-option>`);
+describe('SortableOption', () => {
+  let element2;
+  beforeEach(async () => {
+    element2 = await fixture(html`<sortable-frame
+      activequestion="Hello"
+      question="1"
+      dataSource="..assets/questions.json"
+    >
+      <sortable-option></sortable-option>
+      <sortable-option choice="Test123"></sortable-option>
+    </sortable-frame>`);
   });
 
-  it('Contains a div slot', async () => {
-    expect(element.shadowRoot.querySelectorAll('div slot')[0].name).to.equal(
-      'choice'
+  it('Choice equals Option 1', async () => {
+    expect(element2.querySelector('sortable-option').choice).to.equal(
+      'option 1'
     );
   });
 
   it('Choice', () => {
-    expect(element.choice).to.exist;
-    expect(element.choice).to.equal('Option1');
+    expect(element2.querySelector('sortable-option').choice).to.exist;
+    expect(element2.querySelectorAll('sortable-option')[1].choice).not.to.equal(
+      'option 1'
+    );
   });
 });
